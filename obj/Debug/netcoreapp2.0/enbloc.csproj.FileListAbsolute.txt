@@ -1,0 +1,12 @@
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/enbloc.deps.json
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/enbloc.runtimeconfig.json
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/enbloc.runtimeconfig.dev.json
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/enbloc.dll
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/enbloc.pdb
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/EmailService.dll
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/EmailService.pdb
+/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/enbloc.csproj.CoreCompileInputs.cache
+/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/enbloc.AssemblyInfoInputs.cache
+/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/enbloc.AssemblyInfo.cs
+/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/enbloc.dll
+/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/enbloc.pdb
