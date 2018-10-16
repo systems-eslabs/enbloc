@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using mailLibrary;
+using EmailService;
 using OfficeOpenXml;
 using enbloc.Entity.Classes;
+using Common;
 
 namespace enbloc
 {
 
     class Program
     {
-        public Program(empezarContext context)
-        {
+
+        static void Main(string[] args)
+        { 
+            //Only If Local Env
             var gcpCredentaialPath = "./config/client_secret.json";
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", gcpCredentaialPath);
-        }
-        static void Main(string[] args)
-        {            
+
+
             Mail mailService = new Mail();
             List<Email> enblocEmails = new List<Email>();
 

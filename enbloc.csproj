@@ -2,9 +2,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\services\email\EMailService\EmailService.csproj" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.0-preview2-final"/>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.0-rc"/>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2"/>
+    <ProjectReference Include="..\services\common\common.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.0-preview2-final" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.0-rc" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
   </ItemGroup>
   
 
@@ -14,8 +15,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2"/>
-      <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.1.0-preview1-final"/>
+      <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
+      <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.1.0-preview1-final" />
   </ItemGroup>
+
+
 
 </Project>
