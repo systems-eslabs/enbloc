@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace enbloc.Entity.Classes
+namespace enbloc.DbEntity.Classes
 {
-    public partial class EmptyEnblocContainersHistory
+    public partial class EmptyEnblocSnapshot
     {
         public long Id { get; set; }
         public long TransactionId { get; set; }
         public string Vessel { get; set; }
         public string Voyage { get; set; }
-        public string VesselNo { get; set; }
+        public string AgentName { get; set; }
+        public string ViaNo { get; set; }
+        public string Date { get; set; }
         public string Srl { get; set; }
         public string ContainerNo { get; set; }
-        public string ContainerDimension { get; set; }
-        public int ContainerSize { get; set; }
         public string ContainerType { get; set; }
         public string Wt { get; set; }
         public string Cargo { get; set; }
@@ -31,10 +31,6 @@ namespace enbloc.Entity.Classes
         public string ItemNo { get; set; }
         public string DisposalMode { get; set; }
         public int CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public int? ModifiedBy { get; set; }
-        public DateTime? ModifiedDate { get; set; }
-        public int? HistoryBy { get; set; }
-        public DateTime HistoryDate { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

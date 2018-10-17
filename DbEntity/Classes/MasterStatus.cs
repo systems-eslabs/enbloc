@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace enbloc.Entity.Classes
+namespace enbloc.DbEntity.Classes
 {
     public partial class MasterStatus
     {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace enbloc.Entity.Classes
+namespace enbloc.DbEntity.Classes
 {
     public partial class empezarContext : DbContext
     {
@@ -48,7 +48,7 @@ password=pop@123456;database=empezar");
 
                 entity.Property(e => e.AgentName)
                     .HasColumnName("agent_name")
-                    .HasColumnType("varchar(200)");
+                    .HasColumnType("varchar(300)");
 
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
@@ -59,9 +59,9 @@ password=pop@123456;database=empezar");
                     .HasColumnType("timestamp")
                     .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
 
-                entity.Property(e => e.Date)
-                    .HasColumnName("date")
-                    .HasColumnType("varchar(50)");
+                entity.Property(e => e.DepotName)
+                    .HasColumnName("depot_name")
+                    .HasColumnType("varchar(150)");
 
                 entity.Property(e => e.ModifiedBy)
                     .HasColumnName("modified_by")
@@ -71,6 +71,10 @@ password=pop@123456;database=empezar");
                     .HasColumnName("modified_date")
                     .HasColumnType("timestamp");
 
+                entity.Property(e => e.PermissionDate)
+                    .HasColumnName("permission_date")
+                    .HasColumnType("varchar(50)");
+
                 entity.Property(e => e.TransactionId)
                     .HasColumnName("transaction_id")
                     .HasColumnType("bigint(20)");
@@ -78,21 +82,21 @@ password=pop@123456;database=empezar");
                 entity.Property(e => e.Vessel)
                     .IsRequired()
                     .HasColumnName("vessel")
-                    .HasColumnType("varchar(100)");
+                    .HasColumnType("varchar(200)");
 
                 entity.Property(e => e.VesselNo)
                     .IsRequired()
                     .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(150)");
+                    .HasColumnType("varchar(250)");
 
                 entity.Property(e => e.ViaNo)
                     .HasColumnName("via_no")
-                    .HasColumnType("varchar(50)");
+                    .HasColumnType("varchar(10)");
 
                 entity.Property(e => e.Voyage)
                     .IsRequired()
                     .HasColumnName("voyage")
-                    .HasColumnType("varchar(50)");
+                    .HasColumnType("varchar(10)");
             });
 
             modelBuilder.Entity<EmptyEnblocArchive>(entity =>
@@ -105,7 +109,7 @@ password=pop@123456;database=empezar");
 
                 entity.Property(e => e.AgentName)
                     .HasColumnName("agent_name")
-                    .HasColumnType("varchar(200)");
+                    .HasColumnType("varchar(300)");
 
                 entity.Property(e => e.ArchivedBy)
                     .HasColumnName("archived_by")
@@ -124,9 +128,9 @@ password=pop@123456;database=empezar");
                     .HasColumnName("created_date")
                     .HasColumnType("timestamp");
 
-                entity.Property(e => e.Date)
-                    .HasColumnName("date")
-                    .HasColumnType("varchar(50)");
+                entity.Property(e => e.DepotName)
+                    .HasColumnName("depot_name")
+                    .HasColumnType("varchar(150)");
 
                 entity.Property(e => e.ModifiedBy)
                     .HasColumnName("modified_by")
@@ -136,6 +140,10 @@ password=pop@123456;database=empezar");
                     .HasColumnName("modified_date")
                     .HasColumnType("timestamp");
 
+                entity.Property(e => e.PermissionDate)
+                    .HasColumnName("permission_date")
+                    .HasColumnType("varchar(50)");
+
                 entity.Property(e => e.TransactionId)
                     .HasColumnName("transaction_id")
                     .HasColumnType("bigint(20)");
@@ -143,21 +151,21 @@ password=pop@123456;database=empezar");
                 entity.Property(e => e.Vessel)
                     .IsRequired()
                     .HasColumnName("vessel")
-                    .HasColumnType("varchar(100)");
+                    .HasColumnType("varchar(200)");
 
                 entity.Property(e => e.VesselNo)
                     .IsRequired()
                     .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(150)");
+                    .HasColumnType("varchar(250)");
 
                 entity.Property(e => e.ViaNo)
                     .HasColumnName("via_no")
-                    .HasColumnType("varchar(50)");
+                    .HasColumnType("varchar(10)");
 
                 entity.Property(e => e.Voyage)
                     .IsRequired()
                     .HasColumnName("voyage")
-                    .HasColumnType("varchar(50)");
+                    .HasColumnType("varchar(10)");
             });
 
             modelBuilder.Entity<EmptyEnblocContainers>(entity =>

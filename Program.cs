@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using EmailService;
 using OfficeOpenXml;
-using enbloc.Entity.Classes;
+using enbloc.DbEntity.Classes;
 using Common;
 
 namespace enbloc
@@ -14,7 +14,7 @@ namespace enbloc
     {
 
         static void Main(string[] args)
-        { 
+        {
             //Only If Local Env
             var gcpCredentaialPath = "./config/client_secret.json";
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", gcpCredentaialPath);
@@ -73,11 +73,10 @@ namespace enbloc
 
         private static void ProcessEmailAttachments(Email email)
         {
-            empezarContext _context = new empezarContext();
             // SaveEnblocSnapshot();
             // SaveEnblocContainerSnapshot();
 
- 
+
             // SaveEnbloc();
 
             // SaveEnblocContainer();
@@ -85,7 +84,7 @@ namespace enbloc
             email.Attachments.ForEach(mail =>
             {
                 FileInfo file = new FileInfo(mail.localUrl);
-                
+
                 using (ExcelPackage package = new ExcelPackage(file))
                 {
                     List<EmptyEnblocSnapshot> lstEnblocSnapshot = new List<EmptyEnblocSnapshot>();
@@ -93,7 +92,7 @@ namespace enbloc
                     int rowCount = worksheet.Dimension.Rows;
                     int ColCount = worksheet.Dimension.Columns;
 
-                    
+
 
                     string document_date = Convert.ToString(worksheet.Cells["C1"].Value);
                     string vessel = Convert.ToString(worksheet.Cells["B4"].Value);
@@ -137,11 +136,13 @@ namespace enbloc
 
                         }
                     }
-                    _context.AddRangeAsync(lstEnblocSnapshot);
-                    _context.SaveChanges();
+                    new EmpezarRepository<EmptyEnblocSnapshot>().AddRange(lstEnblocSnapshot);
+                    // _context.AddRangeAsync(lstEnblocSnapshot);
+                    // _context.SaveChanges();
+
                 }
             });
-       
+
 
         }
 

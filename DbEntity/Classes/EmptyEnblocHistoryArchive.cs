@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace enbloc.Entity.Classes
+namespace enbloc.DbEntity.Classes
 {
-    public partial class EmptyEnblocHistory
+    public partial class EmptyEnblocHistoryArchive
     {
         public long Id { get; set; }
         public string Vessel { get; set; }
@@ -18,6 +18,8 @@ namespace enbloc.Entity.Classes
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public int? HistoryBy { get; set; }
-        public DateTime HistoryDate { get; set; }
+        public DateTime? HistoryDate { get; set; }
+        public int? ArchivedBy { get; set; }
+        public DateTime ArchivedDate { get; set; }
     }
 }
