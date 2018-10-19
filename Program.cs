@@ -13,51 +13,206 @@ namespace enbloc
     class Program
     {
 
+
+
         static void Main(string[] args)
         {
-            //Only If Local Env
-            var gcpCredentaialPath = "./config/client_secret.json";
-            System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", gcpCredentaialPath);
-
-
-            Mail mailService = new Mail();
-            List<Email> enblocEmails = new List<Email>();
-
-            //Get All Unread Emails
-            var baseEnblocEmails = mailService.getUnreadEmailsByLabel("INBOX"); //Enbloc.Loaded
-            if (baseEnblocEmails.Success)
+            try
             {
-                enblocEmails = baseEnblocEmails.Data;
+                //Only If Local Env
+                var gcpCredentaialPath = "./config/client_secret.json";
+                System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", gcpCredentaialPath);
 
-                enblocEmails.ForEach(mail =>
+                Mail mailService = new Mail();
+                List<Email> emails = new List<Email>();
+
+                //Get All Unread Emails
+                var baseEmails = mailService.getUnreadEmailsByLabel("INBOX"); //Enbloc.Loaded
+                                                                              //Log Object
+                if (baseEmails.Success)
                 {
-
-                    if (mail.Attachments.Any())
+                    emails = baseEmails.Data;
+                    emails.ForEach(email =>
                     {
-                        GetEmailAttachments(mailService, mail);
-
-                        if (mail.HasValidAttachments)
+                        if (validateMail(email))
                         {
-                            ProcessEmailAttachments(mailService, mail);
+                            switch (email.Subject.Trim().ToLower())
+                            {
+                                case "enbloc.loaded":
+                                    break;
+                                case "enbloc.empty":
+                                    break;
+                                default:
+                                    var replyTemplate = getTemplate(TemplateCodes.InvalidSubject);
+                                    ReplyTonEmail(mailService, mail, replyTemplate);
+                                    break;
+                            }
                         }
-                    }
+                    });
+                }
+                else
+                {
+                    //return true;
+                    //throw exception
+                }
 
-                });
             }
-            else
+            catch (Exception ex)
             {
-                //return true;
-                //throw exception
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //validationCodes
+        enum TemplateCodes
+        {
+            EmailNotWhiteListed,
+            MaxEmailLimitReached,
+            InvalidSubject, // For all emails that are not classified into labels
+            NoAttachment,
+            InvalidNoOfAttachment,
+            InvalidFormat,
+            NoRowsLimitReached,
+            EmailProcessed,
+            ErrorOccured,
+        };
+
+
+
+        private bool validateMail(Email mail)
+        {
+            //EmailNotWhiteListed,
+            //MaxEmailLimitReached,
+        }
+
+        private string getTemplate(TemplateCodes templateCode)
+        {
+            string template = "";
+            switch (templateCode)
+            {
+                case TemplateCodes.EmailNotWhiteListed:
+                    template = "Email Id Not White Listed";
+                    break;
+                case TemplateCodes.MaxEmailLimitReached:
+                    template = "Maximum limit Reached";
+                    break;
+                case TemplateCodes.InvalidSubject:
+                    template = "Subject is invalid";
+                    break;
+                case TemplateCodes.NoAttachment:
+                    template = "Missing valid Attachment";
+                    break;
+                case TemplateCodes.InvalidFormat:
+                    template = "Invalid Format";
+                    break;
+                case TemplateCodes.NoRowsLimitReached:
+                    template = "Maximum rows limit reached";
+                    break;
+                case TemplateCodes.EmailProcessed:
+                    template = "Your Enbloc has been processed by <b>Empezar's Bot Technology</b>.<br /><br />Transaction Number for the same is :  {vesselno} <br /><br />To check live status,please click on the below link.<br /> http://elabs-215913.appspot.com/view/Firestore/Enbloc <br /><br /><br />Thank You.";
+                    break;
+                case TemplateCodes.ErrorOccured:
+                    template = "Some error occured while processing your enbloc, please contact our backend team.";
+                    break;
             }
 
         }
 
-        private static void GetEmailAttachments(Mail mailService, Email mail)
-        {
-            var attachments = mail.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX)).ToList();
 
-            if (attachments.Any())
+        public string processEmail(Mail mailService, Email email)
+        {
+            BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
+            List<EmptyEnblocSnapshot> lstEnblocSnapshot = new List<EmptyEnblocSnapshot>();
+            baseObject.Success = false;
+
+            baseObject = GetEmailAttachments(mailService, email);
+            if (baseObject.Success)
             {
+                baseObject = ProcessEmailAttachments(mailService, email, lstEnblocSnapshot);
+            }
+
+            if (baseObject.Success)
+            {
+                baseObject = ValidateEnbloc(lstEnblocSnapshot);
+            }
+
+            if (baseObject.Success)
+            {
+                baseObject = SaveEnblocToDB(lstEnblocSnapshot);
+            }
+
+            return mapTemplateToData(baseObject);
+        }
+
+        private string mapTemplateToData(BaseReturn<Dictionary<string, string>> baseObject)
+        {
+            string replyMessage = "";
+            try
+            {
+                StringBuilder result = new StringBuilder(getTemplate(baseObject.Code));
+                if (baseObject.Data != null)
+                {
+                    baseObject.Data.ForEach(obj =>
+                    {
+                        result.Replace(obj.Key, obj.Value);
+                    });
+                }
+                replyMessage = Convert.FromBase64String(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                replyMessage = "Error Occured !";
+            }
+            return replyMessage;
+        }
+
+
+        private BaseReturn<Dictionary<string, string>> GetEmailAttachments(Mail mailService, Email mail)
+        {
+            BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
+            Dictionary<string, string> obj = new Dictionary<string, string>();
+            baseObject.Success = true;
+
+            try
+            {
+                if (!email.Attachments.Any())
+                {
+                    baseObject.Success = false;
+                    baseObject.Code = TemplateCodes.NoAttachment;
+                    baseObject.Data = obj;
+                    return baseObject;
+                }
+
+                var attachments = mail.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX)).ToList();
+
+                if (!attachments.Any())
+                {
+                    baseObject.Success = false;
+                    baseObject.Code = TemplateCodes.NoAttachment;
+                    baseObject.Data = obj;
+                    return baseObject;
+                }
+
+                if (!attachments.count > 1) // Invalid no. of attachments
+                {
+                    baseObject.Success = false;
+                    baseObject.Code = TemplateCodes.InvalidNoOfAttachment;
+                    baseObject.Data = obj;
+                    return baseObject;
+                }
+
                 List<EAttachmentRequest> attachmentRequest = attachments.Select(attachment => new EAttachmentRequest
                 {
                     AttachmentId = attachment.AttachmentId,
@@ -65,95 +220,158 @@ namespace enbloc
                 }).ToList();
 
                 mail.Attachments = mailService.getAttachments(mail.MailId, attachmentRequest).Data;
-                mail.HasValidAttachments = true;
+                baseObject.Success = true;
 
             }
+            catch (Exception ex)
+            {
+                baseObject.Success = false;
+                baseObject.Code = TemplateCodes.ErrorOccured;
+                baseObject.Data = obj;
+            }
+            return baseObject;
         }
 
 
-        private static void ProcessEmailAttachments(Mail mailService, Email email)
+        private BaseReturn<Dictionary<string, string>> ProcessEmailAttachments(Mail mailService, Email email, List<EmptyEnblocSnapshot> lstEnblocSnapshot)
         {
+            BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
+            Dictionary<string, string> obj = new Dictionary<string, string>();
+            try
+            {
+                FileInfo file = new FileInfo(mail.localUrl);
+                lstEnblocSnapshot = ProcessEnbloc(file, "EM");
+
+                baseObject.Success = true;
+            }
+            catch (Exception ex)
+            {
+                baseObject.Success = false;
+                baseObject.Code = TemplateCodes.NoAttachment;
+                baseObject.Data = obj;
+            }
+            return baseObject;
+
             // SaveEnblocSnapshot();
             // SaveEnblocContainerSnapshot();
 
-
             // SaveEnbloc();
-
             // SaveEnblocContainer();
-
-            email.Attachments.ForEach(mail =>
-            {
-                FileInfo file = new FileInfo(mail.localUrl);
-
-                using (ExcelPackage package = new ExcelPackage(file))
-                {
-                    List<EmptyEnblocSnapshot> lstEnblocSnapshot = new List<EmptyEnblocSnapshot>();
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
-                    int rowCount = worksheet.Dimension.Rows;
-                    int ColCount = worksheet.Dimension.Columns;
-
-
-
-                    string document_date = Convert.ToString(worksheet.Cells["C1"].Value);
-                    string vessel = Convert.ToString(worksheet.Cells["B4"].Value);
-                    string voyage = Convert.ToString(worksheet.Cells["D4"].Value);
-                    string agent_name = Convert.ToString(worksheet.Cells["B5"].Value);
-                    string via_no = Convert.ToString(worksheet.Cells["D5"].Value);
-
-                    string transaction_no ="EM" + email.TransactionId;
-
-                    for (int row = 8; row <= rowCount; row++)
-                    {
-                        if (Convert.ToString(worksheet.Cells[row, 1].Value).Trim() != "")
-                        {
-                            EmptyEnblocSnapshot enblocSnapshot = new EmptyEnblocSnapshot();
-                            enblocSnapshot.TransactionId = transaction_no;
-                            enblocSnapshot.Vessel = vessel;
-                            enblocSnapshot.Voyage = voyage;
-                            enblocSnapshot.AgentName = agent_name;
-                            enblocSnapshot.ViaNo = via_no;
-                            enblocSnapshot.Date = document_date;
-                            enblocSnapshot.Srl = Convert.ToString(worksheet.Cells[row, 1].Value).Trim();
-                            enblocSnapshot.ContainerNo = Convert.ToString(worksheet.Cells[row, 2].Value).Trim();
-                            enblocSnapshot.ContainerType = Convert.ToString(worksheet.Cells[row, 3].Value).Trim();
-                            enblocSnapshot.Wt = Convert.ToString(worksheet.Cells[row, 4].Value).Trim();
-                            enblocSnapshot.Cargo = Convert.ToString(worksheet.Cells[row, 5].Value).Trim();
-                            enblocSnapshot.IsoCode = Convert.ToString(worksheet.Cells[row, 6].Value).Trim();
-                            enblocSnapshot.SealNo1 = Convert.ToString(worksheet.Cells[row, 7].Value).Trim();
-                            enblocSnapshot.SealNo2 = Convert.ToString(worksheet.Cells[row, 8].Value).Trim();
-                            enblocSnapshot.SealNo3 = Convert.ToString(worksheet.Cells[row, 9].Value).Trim();
-                            enblocSnapshot.ImdgClass = Convert.ToString(worksheet.Cells[row, 10].Value).Trim();
-                            enblocSnapshot.ReferTemrature = Convert.ToString(worksheet.Cells[row, 11].Value).Trim();
-                            enblocSnapshot.OogDeatils = Convert.ToString(worksheet.Cells[row, 12].Value).Trim();
-                            enblocSnapshot.ContainerGrossDetails = Convert.ToString(worksheet.Cells[row, 13].Value).Trim();
-                            enblocSnapshot.CargoDescription = Convert.ToString(worksheet.Cells[row, 14].Value).Trim();
-                            enblocSnapshot.BlNumber = Convert.ToString(worksheet.Cells[row, 15].Value).Trim();
-                            enblocSnapshot.Name = Convert.ToString(worksheet.Cells[row, 16].Value).Trim();
-                            enblocSnapshot.ItemNo = Convert.ToString(worksheet.Cells[row, 17].Value).Trim();
-                            enblocSnapshot.DisposalMode = Convert.ToString(worksheet.Cells[row, 18].Value).Trim();
-                            enblocSnapshot.CreatedBy = 123;//Convert.ToString(worksheet.Cells[row, 19].Value).Trim();
-
-                            lstEnblocSnapshot.Add(enblocSnapshot);
-
-                        }
-                    }
-                    new EmpezarRepository<EmptyEnblocSnapshot>().AddRange(lstEnblocSnapshot);
-
-
-                    ReplyToEmail(mailService, email, transaction_no);
-                    // _context.AddRangeAsync(lstEnblocSnapshot);
-                    // _context.SaveChanges();
-
-                }
-            });
-
-
         }
 
 
-        private static void ReplyToEmail(Mail mailService, Email mail, string vesselno)
+        private List<EmptyEnblocSnapshot> ProcessEnbloc(FileInfo file, string programCode)
         {
-            string replayMsg = "Your Enbloc has been processed by <b>Empezar's Bot Technology</b>.<br /><br />Transaction Number for the same is :  " + vesselno + "<br /><br />To check live status,please click on the below link.<br /> http://elabs-215913.appspot.com/view/Firestore/Enbloc <br /><br /><br />Thank You.";
+            using (ExcelPackage package = new ExcelPackage(file))
+            {
+                List<EmptyEnblocSnapshot> lstEnblocSnapshot = new List<EmptyEnblocSnapshot>();
+                ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
+                int rowCount = worksheet.Dimension.Rows;
+                int ColCount = worksheet.Dimension.Columns;
+
+                string document_date = Convert.ToString(worksheet.Cells["C1"].Value);
+                string vessel = Convert.ToString(worksheet.Cells["B4"].Value);
+                string voyage = Convert.ToString(worksheet.Cells["D4"].Value);
+                string agent_name = Convert.ToString(worksheet.Cells["B5"].Value);
+                string via_no = Convert.ToString(worksheet.Cells["D5"].Value);
+
+                string transaction_no = programCode + email.TransactionId;
+
+                for (int row = 8; row <= rowCount; row++)
+                {
+                    if (Convert.ToString(worksheet.Cells[row, 1].Value).Trim() != "")
+                    {
+                        EmptyEnblocSnapshot enblocSnapshot = new EmptyEnblocSnapshot();
+                        enblocSnapshot.TransactionId = transaction_no;
+                        enblocSnapshot.Vessel = vessel;
+                        enblocSnapshot.Voyage = voyage;
+                        enblocSnapshot.AgentName = agent_name;
+                        enblocSnapshot.ViaNo = via_no;
+                        enblocSnapshot.Date = document_date;
+                        enblocSnapshot.Srl = Convert.ToString(worksheet.Cells[row, 1].Value).Trim();
+                        enblocSnapshot.ContainerNo = Convert.ToString(worksheet.Cells[row, 2].Value).Trim();
+                        enblocSnapshot.ContainerType = Convert.ToString(worksheet.Cells[row, 3].Value).Trim();
+                        enblocSnapshot.Wt = Convert.ToString(worksheet.Cells[row, 4].Value).Trim();
+                        enblocSnapshot.Cargo = Convert.ToString(worksheet.Cells[row, 5].Value).Trim();
+                        enblocSnapshot.IsoCode = Convert.ToString(worksheet.Cells[row, 6].Value).Trim();
+                        enblocSnapshot.SealNo1 = Convert.ToString(worksheet.Cells[row, 7].Value).Trim();
+                        enblocSnapshot.SealNo2 = Convert.ToString(worksheet.Cells[row, 8].Value).Trim();
+                        enblocSnapshot.SealNo3 = Convert.ToString(worksheet.Cells[row, 9].Value).Trim();
+                        enblocSnapshot.ImdgClass = Convert.ToString(worksheet.Cells[row, 10].Value).Trim();
+                        enblocSnapshot.ReferTemrature = Convert.ToString(worksheet.Cells[row, 11].Value).Trim();
+                        enblocSnapshot.OogDeatils = Convert.ToString(worksheet.Cells[row, 12].Value).Trim();
+                        enblocSnapshot.ContainerGrossDetails = Convert.ToString(worksheet.Cells[row, 13].Value).Trim();
+                        enblocSnapshot.CargoDescription = Convert.ToString(worksheet.Cells[row, 14].Value).Trim();
+                        enblocSnapshot.BlNumber = Convert.ToString(worksheet.Cells[row, 15].Value).Trim();
+                        enblocSnapshot.Name = Convert.ToString(worksheet.Cells[row, 16].Value).Trim();
+                        enblocSnapshot.ItemNo = Convert.ToString(worksheet.Cells[row, 17].Value).Trim();
+                        enblocSnapshot.DisposalMode = Convert.ToString(worksheet.Cells[row, 18].Value).Trim();
+                        enblocSnapshot.CreatedBy = 123;//Convert.ToString(worksheet.Cells[row, 19].Value).Trim();
+
+                        lstEnblocSnapshot.Add(enblocSnapshot);
+                    }
+                }
+            }
+
+            return lstEnblocSnapshot;
+        }
+
+        private BaseReturn<Dictionary<string, string>> ValidateEnbloc(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
+        {
+            BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
+            Dictionary<string, string> obj = new Dictionary<string, string>();
+            try
+            {
+                if (lstEnblocSnapshot.Count > 1000)
+                {
+                    baseObject.Success = false;
+                    baseObject.Code = TemplateCodes.NoRowsLimitReached;
+                    baseObject.Data = obj;
+                }
+                // if vessel voyage no already exists and enbloc in progress then no processing 
+                else if (lstEnblocSnapshot.Count > 1000)
+                {
+                    baseObject.Success = false;
+                    baseObject.Code = TemplateCodes.ErrorOccured;
+                    baseObject.Data = obj;
+                }
+                else
+                {
+                    baseObject.Success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                baseObject.Success = false;
+                baseObject.Code = TemplateCodes.ErrorOccured;
+                baseObject.Data = obj;
+            }
+            return baseObject;
+        }
+
+        private BaseReturn<Dictionary<string, string>> SaveEnblocToDB(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
+        {
+            BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
+            Dictionary<string, string> obj = new Dictionary<string, string>();
+            try
+            {
+                new EmpezarRepository<EmptyEnblocSnapshot>().AddRange(lstEnblocSnapshot);
+                baseObject.Success = true;
+                baseObject.Code = TemplateCodes.EmailProcessed;
+                baseObject.Data = obj;
+            }
+            catch (Exception ex)
+            {
+                baseObject.Success = false;
+                baseObject.Code = TemplateCodes.ErrorOccured;
+                baseObject.Data = obj;
+            }
+            return baseObject;
+        }
+
+
+        private static void ReplyToEmail(Mail mailService, Email mail, string replayMsg)
+        {
             mailService.sendMailReply(mail.MailId, replayMsg);
         }
 
