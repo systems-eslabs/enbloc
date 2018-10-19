@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "e297f4fdd90b1070c9df8b9bd833825aa94b1d70"
+    "signature": "5c259c43a972bf0cdf0b1d061290d6ba3257e618"
   },
   "compilationOptions": {},
   "targets": {
@@ -57,32 +57,32 @@
       "Google.Api.Gax.Rest/2.5.0": {
         "dependencies": {
           "Google.Api.Gax": "2.5.0",
-          "Google.Apis.Auth": "1.36.0"
+          "Google.Apis.Auth": "1.36.1"
         },
         "runtime": {
           "lib/netstandard1.3/Google.Api.Gax.Rest.dll": {}
         }
       },
-      "Google.Apis/1.36.0": {
+      "Google.Apis/1.36.1": {
         "dependencies": {
-          "Google.Apis.Core": "1.36.0",
+          "Google.Apis.Core": "1.36.1",
           "Newtonsoft.Json": "11.0.2"
         },
         "runtime": {
           "lib/netstandard2.0/Google.Apis.dll": {}
         }
       },
-      "Google.Apis.Auth/1.36.0": {
+      "Google.Apis.Auth/1.36.1": {
         "dependencies": {
-          "Google.Apis": "1.36.0",
-          "Google.Apis.Core": "1.36.0"
+          "Google.Apis": "1.36.1",
+          "Google.Apis.Core": "1.36.1"
         },
         "runtime": {
           "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll": {},
           "lib/netstandard2.0/Google.Apis.Auth.dll": {}
         }
       },
-      "Google.Apis.Core/1.36.0": {
+      "Google.Apis.Core/1.36.1": {
         "dependencies": {
           "Newtonsoft.Json": "11.0.2"
         },
@@ -90,10 +90,10 @@
           "lib/netstandard2.0/Google.Apis.Core.dll": {}
         }
       },
-      "Google.Apis.Gmail.v1/1.36.0.1342": {
+      "Google.Apis.Gmail.v1/1.36.1.1342": {
         "dependencies": {
-          "Google.Apis": "1.36.0",
-          "Google.Apis.Auth": "1.36.0"
+          "Google.Apis": "1.36.1",
+          "Google.Apis.Auth": "1.36.1"
         },
         "runtime": {
           "lib/netstandard2.0/Google.Apis.Gmail.v1.dll": {}
@@ -101,8 +101,8 @@
       },
       "Google.Apis.Storage.v1/1.35.1.1266": {
         "dependencies": {
-          "Google.Apis": "1.36.0",
-          "Google.Apis.Auth": "1.36.0"
+          "Google.Apis": "1.36.1",
+          "Google.Apis.Auth": "1.36.1"
         },
         "runtime": {
           "lib/netstandard2.0/Google.Apis.Storage.v1.dll": {}
@@ -1243,13 +1243,17 @@
         "dependencies": {
           "AE.Net.Mail": "1.7.10",
           "EPPlus.Core": "1.5.4",
-          "Google.Apis.Auth": "1.36.0",
-          "Google.Apis.Gmail.v1": "1.36.0.1342",
+          "Google.Apis.Auth": "1.36.1",
+          "Google.Apis.Gmail.v1": "1.36.1.1342",
           "Google.Cloud.Storage.V1": "2.2.0",
+          "Microsoft.EntityFrameworkCore.Tools": "2.1.4",
           "Newtonsoft.Json": "11.0.2",
+          "Pomelo.EntityFrameworkCore.MySql": "2.1.2",
+          "Pomelo.EntityFrameworkCore.MySql.Design": "1.1.2",
           "StorageService": "1.0.0",
           "System.Text.Encoding.CodePages": "4.5.0",
-          "common": "1.0.0"
+          "common": "1.0.0",
+          "repository": "1.0.0"
         },
         "runtime": {
           "EmailService.dll": {}
@@ -1309,33 +1313,33 @@
       "path": "google.api.gax.rest/2.5.0",
       "hashPath": "google.api.gax.rest.2.5.0.nupkg.sha512"
     },
-    "Google.Apis/1.36.0": {
+    "Google.Apis/1.36.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-GfquikUxdQxudiUyTqn8KdT9FKH80T6hqXgPuWxYneri9fmNhGMR47xxL52shSadtC7j8mG1gihp2EMeeuCTuw==",
-      "path": "google.apis/1.36.0",
-      "hashPath": "google.apis.1.36.0.nupkg.sha512"
+      "sha512": "sha512-NBfotn7kOSd1biulilvCu3CIWr5kI4gXBNGGZyvOgE+ilR06zTPY9kPSVblYUoYPsXFvouZOS8GYPhnpnAK/Zw==",
+      "path": "google.apis/1.36.1",
+      "hashPath": "google.apis.1.36.1.nupkg.sha512"
     },
-    "Google.Apis.Auth/1.36.0": {
+    "Google.Apis.Auth/1.36.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-eMqXgeSeqbGAvaW7TMyfBKnizPohfadKIJr4tcVU+CpaWha9M0yUoelPM/9eFApwGgp39CSkl2eTuikIexlzaA==",
-      "path": "google.apis.auth/1.36.0",
-      "hashPath": "google.apis.auth.1.36.0.nupkg.sha512"
+      "sha512": "sha512-ECo2d+X7gDaa3iBHUTMgW1XZZa9MnjZ3ehAY4oAwpmypcQmvRNchvsuKRxqXq4fwCyGO6gS6iEi6hi6pPxwc0A==",
+      "path": "google.apis.auth/1.36.1",
+      "hashPath": "google.apis.auth.1.36.1.nupkg.sha512"
     },
-    "Google.Apis.Core/1.36.0": {
+    "Google.Apis.Core/1.36.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-mbCVgA5trN82CyykJ/chBat/lm6s7QNDi+YHEsjPOWIBu6YMUpTJguQzTwpCfEDyMY6FakVb8vN/c6o79/o4dw==",
-      "path": "google.apis.core/1.36.0",
-      "hashPath": "google.apis.core.1.36.0.nupkg.sha512"
+      "sha512": "sha512-UVcewN+O3kQ0bJ+pSH10RLc2vMNmgBGetXGY9HQms3W0PXWqiIh2PioVggwrfLmL/6wYBJA9N3l+vA/C2yS0kw==",
+      "path": "google.apis.core/1.36.1",
+      "hashPath": "google.apis.core.1.36.1.nupkg.sha512"
     },
-    "Google.Apis.Gmail.v1/1.36.0.1342": {
+    "Google.Apis.Gmail.v1/1.36.1.1342": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-v9qtEnjwzdHZ1dT3gO0uY4MST3yGlVKTVNKmnfR6uyM0lYz91jgAdVwZ3Qo362dNgbsiEFWwY3yEQDI747O5WA==",
-      "path": "google.apis.gmail.v1/1.36.0.1342",
-      "hashPath": "google.apis.gmail.v1.1.36.0.1342.nupkg.sha512"
+      "sha512": "sha512-Y0ZO6p9xySUWyzLY7oiFWQNfZ/Hwol8BbnkLvomZV01Qh5ByCJCdiU/Nq79FjSpc51nJZj+Zs6Tr0Y0ku8nNDw==",
+      "path": "google.apis.gmail.v1/1.36.1.1342",
+      "hashPath": "google.apis.gmail.v1.1.36.1.1342.nupkg.sha512"
     },
     "Google.Apis.Storage.v1/1.35.1.1266": {
       "type": "package",

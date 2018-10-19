@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Repository;
-using enbloc.DbEntity.Classes;
+using enbloc.DbEntities;
 
 namespace enbloc
 {

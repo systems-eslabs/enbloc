@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using EmailService;
 using OfficeOpenXml;
-using enbloc.DbEntity.Classes;
+using enbloc.DbEntities;
 using Common;
 
 namespace enbloc
@@ -38,7 +38,7 @@ namespace enbloc
 
                         if (mail.HasValidAttachments)
                         {
-                            ProcessEmailAttachments(mail);
+                            ProcessEmailAttachments(mailService, mail);
                         }
                     }
 
@@ -71,7 +71,7 @@ namespace enbloc
         }
 
 
-        private static void ProcessEmailAttachments(Email email)
+        private static void ProcessEmailAttachments(Mail mailService, Email email)
         {
             // SaveEnblocSnapshot();
             // SaveEnblocContainerSnapshot();
@@ -100,13 +100,14 @@ namespace enbloc
                     string agent_name = Convert.ToString(worksheet.Cells["B5"].Value);
                     string via_no = Convert.ToString(worksheet.Cells["D5"].Value);
 
+                    string transaction_no ="EM" + email.TransactionId;
 
                     for (int row = 8; row <= rowCount; row++)
                     {
                         if (Convert.ToString(worksheet.Cells[row, 1].Value).Trim() != "")
                         {
                             EmptyEnblocSnapshot enblocSnapshot = new EmptyEnblocSnapshot();
-                            //enblocSnapshot.TransactionId = email.TransactionId;
+                            enblocSnapshot.TransactionId = transaction_no;
                             enblocSnapshot.Vessel = vessel;
                             enblocSnapshot.Voyage = voyage;
                             enblocSnapshot.AgentName = agent_name;
@@ -137,6 +138,9 @@ namespace enbloc
                         }
                     }
                     new EmpezarRepository<EmptyEnblocSnapshot>().AddRange(lstEnblocSnapshot);
+
+
+                    ReplyToEmail(mailService, email, transaction_no);
                     // _context.AddRangeAsync(lstEnblocSnapshot);
                     // _context.SaveChanges();
 
@@ -147,7 +151,11 @@ namespace enbloc
         }
 
 
-
+        private static void ReplyToEmail(Mail mailService, Email mail, string vesselno)
+        {
+            string replayMsg = "Your Enbloc has been processed by <b>Empezar's Bot Technology</b>.<br /><br />Transaction Number for the same is :  " + vesselno + "<br /><br />To check live status,please click on the below link.<br /> http://elabs-215913.appspot.com/view/Firestore/Enbloc <br /><br /><br />Thank You.";
+            mailService.sendMailReply(mail.MailId, replayMsg);
+        }
 
 
         //Get Emails 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace enbloc.DbEntity.Classes
+namespace enbloc.DbEntities
 {
     public partial class EmptyEnbloc
     {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace enbloc.DbEntity.Classes
+namespace enbloc.DbEntities
 {
     public partial class empezarContext : DbContext
     {
