@@ -22,8 +22,6 @@ namespace enbloc.DbEntities
         public virtual DbSet<EmptyEnblocContainersHistoryArchive> EmptyEnblocContainersHistoryArchive { get; set; }
         public virtual DbSet<EmptyEnblocHistory> EmptyEnblocHistory { get; set; }
         public virtual DbSet<EmptyEnblocHistoryArchive> EmptyEnblocHistoryArchive { get; set; }
-        public virtual DbSet<EmptyEnblocSnapshot> EmptyEnblocSnapshot { get; set; }
-        public virtual DbSet<EmptyEnblocSnapshotArchive> EmptyEnblocSnapshotArchive { get; set; }
         public virtual DbSet<MasterStatus> MasterStatus { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -76,8 +74,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
+                    .IsRequired()
                     .HasColumnName("transaction_id")
-                    .HasColumnType("bigint(20)");
+                    .HasColumnType("varchar(25)");
 
                 entity.Property(e => e.Vessel)
                     .IsRequired()
@@ -188,11 +187,6 @@ password=vijay@123;database=empezar");
                     .HasColumnName("cargo_description")
                     .HasColumnType("varchar(500)");
 
-                entity.Property(e => e.ContainerDimension)
-                    .IsRequired()
-                    .HasColumnName("container_dimension")
-                    .HasColumnType("varchar(10)");
-
                 entity.Property(e => e.ContainerGrossDetails)
                     .HasColumnName("container_gross_details")
                     .HasColumnType("varchar(500)");
@@ -273,8 +267,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(500)");
 
                 entity.Property(e => e.TransactionId)
+                    .IsRequired()
                     .HasColumnName("transaction_id")
-                    .HasColumnType("bigint(20)");
+                    .HasColumnType("varchar(25)");
 
                 entity.Property(e => e.Vessel)
                     .IsRequired()
@@ -716,244 +711,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(50)");
-            });
-
-            modelBuilder.Entity<EmptyEnblocSnapshot>(entity =>
-            {
-                entity.ToTable("empty_enbloc_snapshot");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("bigint(20)");
-
-                entity.Property(e => e.AgentName)
-                    .HasColumnName("agent_name")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.BlNumber)
-                    .HasColumnName("bl_number")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.Cargo)
-                    .HasColumnName("cargo")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.CargoDescription)
-                    .HasColumnName("cargo_description")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ContainerGrossDetails)
-                    .HasColumnName("container_gross_details")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ContainerNo)
-                    .HasColumnName("container_no")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ContainerType)
-                    .HasColumnName("container_type")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.CreatedBy)
-                    .HasColumnName("created_by")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.CreatedDate)
-                    .HasColumnName("created_date")
-                    .HasColumnType("timestamp")
-                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
-
-                entity.Property(e => e.Date)
-                    .HasColumnName("date")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.DisposalMode)
-                    .HasColumnName("disposal_mode")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ImdgClass)
-                    .HasColumnName("imdg_class")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.IsoCode)
-                    .HasColumnName("iso_code")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ItemNo)
-                    .HasColumnName("item_no")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.Name)
-                    .HasColumnName("name")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.OogDeatils)
-                    .HasColumnName("oog_deatils")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ReferTemrature)
-                    .HasColumnName("refer_temrature")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.SealNo1)
-                    .HasColumnName("seal_no_1")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.SealNo2)
-                    .HasColumnName("seal_no_2")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.SealNo3)
-                    .HasColumnName("seal_no_3")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.Srl)
-                    .HasColumnName("srl")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.TransactionId)
-                    .IsRequired()
-                    .HasColumnName("transaction_id")
-                    .HasColumnType("varchar(25)");
-
-                entity.Property(e => e.Vessel)
-                    .HasColumnName("vessel")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ViaNo)
-                    .HasColumnName("via_no")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.Voyage)
-                    .HasColumnName("voyage")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.Wt)
-                    .HasColumnName("wt")
-                    .HasColumnType("varchar(500)");
-            });
-
-            modelBuilder.Entity<EmptyEnblocSnapshotArchive>(entity =>
-            {
-                entity.ToTable("empty_enbloc_snapshot_archive");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("bigint(20)");
-
-                entity.Property(e => e.AgentName)
-                    .HasColumnName("agent_name")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ArchivedBy)
-                    .HasColumnName("archived_by")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.ArchivedDate)
-                    .HasColumnName("archived_date")
-                    .HasColumnType("timestamp")
-                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'")
-                    .ValueGeneratedOnAddOrUpdate();
-
-                entity.Property(e => e.BlNumber)
-                    .HasColumnName("bl_number")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.Cargo)
-                    .HasColumnName("cargo")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.CargoDescription)
-                    .HasColumnName("cargo_description")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ContainerGrossDetails)
-                    .HasColumnName("container_gross_details")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ContainerNo)
-                    .HasColumnName("container_no")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ContainerType)
-                    .HasColumnName("container_type")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.CreatedBy)
-                    .HasColumnName("created_by")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.CreatedDate)
-                    .HasColumnName("created_date")
-                    .HasColumnType("timestamp");
-
-                entity.Property(e => e.Date)
-                    .HasColumnName("date")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.DisposalMode)
-                    .HasColumnName("disposal_mode")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ImdgClass)
-                    .HasColumnName("imdg_class")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.IsoCode)
-                    .HasColumnName("iso_code")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ItemNo)
-                    .HasColumnName("item_no")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.Name)
-                    .HasColumnName("name")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.OogDeatils)
-                    .HasColumnName("oog_deatils")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ReferTemrature)
-                    .HasColumnName("refer_temrature")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.SealNo1)
-                    .HasColumnName("seal_no_1")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.SealNo2)
-                    .HasColumnName("seal_no_2")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.SealNo3)
-                    .HasColumnName("seal_no_3")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.Srl)
-                    .HasColumnName("srl")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.TransactionId)
-                    .HasColumnName("transaction_id")
-                    .HasColumnType("bigint(20)");
-
-                entity.Property(e => e.Vessel)
-                    .HasColumnName("vessel")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.ViaNo)
-                    .HasColumnName("via_no")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.Voyage)
-                    .HasColumnName("voyage")
-                    .HasColumnType("varchar(500)");
-
-                entity.Property(e => e.Wt)
-                    .HasColumnName("wt")
-                    .HasColumnType("varchar(500)");
             });
 
             modelBuilder.Entity<MasterStatus>(entity =>

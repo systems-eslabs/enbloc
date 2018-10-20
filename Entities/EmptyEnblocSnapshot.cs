@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using enbloc.DbEntities;
 using FluentValidation;
 
 namespace enbloc.Entities
@@ -11,8 +12,9 @@ namespace enbloc.Entities
         public string Vessel { get; set; }
         public string Voyage { get; set; }
         public string AgentName { get; set; }
+        public string DepotName { get; set; }
         public string ViaNo { get; set; }
-        public string Date { get; set; }
+        public string PermissionDate { get; set; }
         public string Srl { get; set; }
         public string ContainerNo { get; set; }
         public string ContainerType { get; set; }
@@ -35,11 +37,20 @@ namespace enbloc.Entities
         public DateTime CreatedDate { get; set; }
     }
 
-       public class EmptyEnblocSnapshotValidator : AbstractValidator<EmptyEnblocSnapshot>
+    public class EmptyEnblocValidator : AbstractValidator<EmptyEnblocSnapshot>
     {
-        public EmptyEnblocSnapshotValidator()
+        public EmptyEnblocValidator()
         {
-            RuleFor(enbloc => enbloc.Vessel).NotEmpty();
+            RuleFor(enbloc => enbloc.Vessel).NotEmpty().WithMessage("Vessel can't be empty");
+            RuleFor(enbloc => enbloc.ContainerNo).Length(11).WithMessage("Container Number should have length 11");
+        }
+    }
+
+    public class EmptyEnblocValidatorCollectionValidator : AbstractValidator<IEnumerable<EmptyEnblocSnapshot>>
+    {
+        public EmptyEnblocValidatorCollectionValidator()
+        {
+            RuleFor(x => x).SetCollectionValidator(new EmptyEnblocValidator());
         }
     }
 }

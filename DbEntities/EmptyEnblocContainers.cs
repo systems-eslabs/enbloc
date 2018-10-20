@@ -6,13 +6,12 @@ namespace enbloc.DbEntities
     public partial class EmptyEnblocContainers
     {
         public long Id { get; set; }
-        public long TransactionId { get; set; }
+        public string TransactionId { get; set; }
         public string Vessel { get; set; }
         public string Voyage { get; set; }
         public string VesselNo { get; set; }
         public string Srl { get; set; }
         public string ContainerNo { get; set; }
-        public string ContainerDimension { get; set; }
         public int ContainerSize { get; set; }
         public string ContainerType { get; set; }
         public string Wt { get; set; }
