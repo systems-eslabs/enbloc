@@ -4,13 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Repository;
-using enbloc.DbEntities;
 
-namespace enbloc
+namespace Enbloc.DbEntities
 {
-    public class  EmpezarRepository<T> : Repository<T> where T : class
-    { 
-        public EmpezarRepository():base(new empezarContext())
+    public class EmpezarRepository<T> : Repository<T> where T : class
+    {
+        public EmpezarRepository() : base(new empezarContext())
         {
         }
     }

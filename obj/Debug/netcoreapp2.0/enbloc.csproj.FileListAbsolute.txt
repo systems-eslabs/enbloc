@@ -16,3 +16,5 @@
 /home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/repository.pdb
 /home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/enbloc.dll
 /home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/enbloc.pdb
+/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/enbloc.csprojAssemblyReference.cache
+/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/enbloc.csproj.CopyComplete

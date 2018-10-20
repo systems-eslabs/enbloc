@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace enbloc.DbEntities
+namespace Enbloc.DbEntities
 {
     public partial class EmptyEnbloc
     {
@@ -13,7 +13,7 @@ namespace enbloc.DbEntities
         public string ViaNo { get; set; }
         public string PermissionDate { get; set; }
         public string DepotName { get; set; }
-        public long TransactionId { get; set; }
+        public string TransactionId { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? ModifiedBy { get; set; }
