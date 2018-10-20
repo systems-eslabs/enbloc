@@ -15,7 +15,7 @@ namespace Enbloc
     {
         Mail mailService = null;
 
-        Enbloc()
+        public Enbloc()
         {
             this.mailService = new Mail();
         }

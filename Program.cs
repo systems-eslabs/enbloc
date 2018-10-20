@@ -26,42 +26,7 @@ namespace Enbloc
                 var gcpCredentaialPath = "./config/client_secret.json";
                 System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", gcpCredentaialPath);
 
-                Mail mailService = new Mail();
-                List<Email> emails = new List<Email>();
-
-                //Get All Unread Emails
-                var baseEmails = mailService.getUnreadEmailsByLabel("INBOX"); //Enbloc.Loaded
-                                                                              //Log Object
-                if (baseEmails.Success)
-                {
-                    emails = baseEmails.Data;
-                    emails.ForEach(email =>
-                    {
-                        if (validateMail(email))
-                        {
-                            // switch (email.Subject.Trim().ToLower())
-                            // {
-                            //     case "enbloc.loaded":
-                            //         break;
-                            //     case "enbloc.empty":
-                            //         break;
-                            //     default:
-                            //         var replyTemplate = getTemplate(TemplateCodes.InvalidSubject);
-                            //         //ReplyToEmail(mailService, mail, replyTemplate);
-                            //         break;
-                            // }
-
-                            string replyTemplate = processEmail(mailService, email);
-
-                            ReplyToEmail(mailService, email, replyTemplate);
-                        }
-                    });
-                }
-                else
-                {
-                    //return true;
-                    //throw exception
-                }
+                new Enbloc().processUnreadEmails();
 
             }
             catch (Exception ex)
@@ -156,7 +121,7 @@ namespace Enbloc
             if (baseObject.Success)
             {
                 baseObject = ValidateEnbloc(lstEnblocSnapshot);
-            }          
+            }
 
             if (baseObject.Success)
             {
