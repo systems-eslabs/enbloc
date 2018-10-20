@@ -1,19 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\services\email\EMailService\EmailService.csproj" />
-    <ProjectReference Include="..\services\common\common.csproj" />
-
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
-
+    <ProjectReference Include="..\services\email\EMailService\EmailService.csproj"/>
+    <ProjectReference Include="..\services\common\common.csproj"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4"/>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2"/>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2"/>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.0.100"/>
   </ItemGroup>
   <ItemGroup>
-      <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
-      <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4"/>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\services\repository\repository.csproj" />
+    <ProjectReference Include="..\services\repository\repository.csproj"/>
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>

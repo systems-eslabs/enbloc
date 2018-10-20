@@ -31,8 +31,8 @@ namespace enbloc.DbEntities
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql(@"server=35.200.194.132;port=3306;user=root;
-password=pop@123456;database=empezar");
+                optionsBuilder.UseMySql(@"server=35.239.152.184;port=3306;user=root;
+password=vijay@123;database=empezar");
             }
         }
 
@@ -812,8 +812,9 @@ password=pop@123456;database=empezar");
                     .HasColumnType("varchar(500)");
 
                 entity.Property(e => e.TransactionId)
+                    .IsRequired()
                     .HasColumnName("transaction_id")
-                    .HasColumnType("bigint(20)");
+                    .HasColumnType("varchar(25)");
 
                 entity.Property(e => e.Vessel)
                     .HasColumnName("vessel")

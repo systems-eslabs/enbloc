@@ -7,7 +7,7 @@ using OfficeOpenXml;
 //using enbloc.DbEntities;
 using Common;
 using System.Text;
-using enbloc.DTOs;
+using enbloc.Entities;
 using FluentValidation.Results;
 
 namespace enbloc

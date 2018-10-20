@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentValidation;
 
-namespace enbloc.DbEntities
+namespace enbloc.Entities
 {
-    public partial class EmptyEnblocSnapshot
+    public class EmptyEnblocSnapshot
     {
         public long Id { get; set; }
         public string TransactionId { get; set; }
@@ -32,5 +33,13 @@ namespace enbloc.DbEntities
         public string DisposalMode { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
+    }
+
+       public class EmptyEnblocSnapshotValidator : AbstractValidator<EmptyEnblocSnapshot>
+    {
+        public EmptyEnblocSnapshotValidator()
+        {
+            RuleFor(enbloc => enbloc.Vessel).NotEmpty();
+        }
     }
 }
