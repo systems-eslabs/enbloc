@@ -185,6 +185,7 @@ namespace Enbloc
             {
                 LoadedEnblocValidatorCollectionValidator validator = new LoadedEnblocValidatorCollectionValidator();
 
+                obj.Add("[{{transactionNo}}]", Convert.ToString(lstEnblocSnapshot.First().TransactionId));
                 if (lstEnblocSnapshot.Count > 1000)
                 {
                     baseObject.Success = false;
@@ -197,8 +198,9 @@ namespace Enbloc
 
                 if (IsVesselVoyageExists(lstEnblocSnapshot.First().Vessel, lstEnblocSnapshot.First().Voyage))
                 {
+                    obj.Add("[{{errors}}]", "<li>Vessel Voyage already exists</li>");
                     baseObject.Success = false;
-                    baseObject.Code = (int)EnumTemplateCode.ErrorOccured;
+                    baseObject.Code = (int)EnumTemplateCode.InvalidExcelFormat;
                     baseObject.Data = obj;
                     return baseObject;
                 }
@@ -206,8 +208,10 @@ namespace Enbloc
                 ValidationResult results = validator.Validate(lstEnblocSnapshot);
                 if (!results.IsValid)
                 {
+                    string errorMessage = "<li>" + results.Errors.Select(x => x.ErrorMessage).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
+                    obj.Add("[{{errors}}]", errorMessage);
                     baseObject.Success = false;
-                    baseObject.Code = (int)EnumTemplateCode.ErrorOccured;
+                    baseObject.Code = (int)EnumTemplateCode.InvalidExcelFormat;
                     baseObject.Data = obj;
                     return baseObject;
                 }
@@ -233,7 +237,7 @@ namespace Enbloc
                 var enblocFromSnapshot = lstEnblocSnapshot.First();
                 string vesselno = enblocFromSnapshot.Vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim()) + enblocFromSnapshot.Voyage.ToString();
 
-                EmptyEnbloc objEnbloc = new EmptyEnbloc()
+                LoadedEnbloc objEnbloc = new LoadedEnbloc()
                 {
                     Vessel = enblocFromSnapshot.Vessel,
                     Voyage = enblocFromSnapshot.Voyage,
@@ -246,13 +250,13 @@ namespace Enbloc
                     CreatedBy = 0
                 };
 
-                new EmpezarRepository<EmptyEnbloc>().Add(objEnbloc);
+                new EmpezarRepository<LoadedEnbloc>().Add(objEnbloc);
 
 
-                List<EmptyEnblocContainers> lstEmptyEnblocContainers = new List<EmptyEnblocContainers>();
+                List<LoadedEnblocContainers> lstLoadedEnblocContainers = new List<LoadedEnblocContainers>();
                 lstEnblocSnapshot.ForEach(enblocContainer =>
                 {
-                    lstEmptyEnblocContainers.Add(new EmptyEnblocContainers()
+                    lstLoadedEnblocContainers.Add(new LoadedEnblocContainers()
                     {
                         TransactionId = enblocContainer.TransactionId,
                         Vessel = enblocContainer.Vessel,
@@ -281,7 +285,7 @@ namespace Enbloc
                     });
                 });
 
-                new EmpezarRepository<EmptyEnblocContainers>().AddRange(lstEmptyEnblocContainers);
+                new EmpezarRepository<LoadedEnblocContainers>().AddRange(lstLoadedEnblocContainers);
 
 
                 baseObject.Success = true;
@@ -300,7 +304,7 @@ namespace Enbloc
         private static bool IsVesselVoyageExists(string vessel, string voyage)
         {
             string vesselno = vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim()) + voyage;
-            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.VesselNo == vesselno);
+            return new EmpezarRepository<LoadedEnbloc>().IsExists(x => x.VesselNo == vesselno);
         }
 
 

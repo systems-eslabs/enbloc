@@ -1,3 +1,6 @@
+/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/Enbloc.csproj.CoreCompileInputs.cache
+/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/Enbloc.AssemblyInfoInputs.cache
+/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/Enbloc.AssemblyInfo.cs
 /home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Enbloc.deps.json
 /home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Enbloc.runtimeconfig.json
 /home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Enbloc.runtimeconfig.dev.json
@@ -11,10 +14,14 @@
 /home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/repository.pdb
 /home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/common.pdb
 /home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/StorageService.pdb
-/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/Enbloc.csproj.CoreCompileInputs.cache
-/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/Enbloc.AssemblyInfoInputs.cache
-/home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/Enbloc.AssemblyInfo.cs
 /home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/Enbloc.dll
 /home/kavita/eslabsroot/enbloc/obj/Debug/netcoreapp2.0/Enbloc.pdb
-/home/kavita/eslabsroot/Enbloc/obj/Debug/netcoreapp2.0/Enbloc.csprojAssemblyReference.cache
-/home/kavita/eslabsroot/Enbloc/obj/Debug/netcoreapp2.0/Enbloc.csproj.CopyComplete
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Templates/EmailIdNotListed.html
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Templates/EmailProcessed.html
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Templates/ErrorOccured.html
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Templates/ExcelNoRowsLimitReached.html
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Templates/HtmlContainer.html
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Templates/InvalidEmailSubject.html
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Templates/InvalidExcelFormat.html
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Templates/MaxEmailLimitReached.html
+/home/kavita/eslabsroot/enbloc/bin/Debug/netcoreapp2.0/Templates/NoExcelAttachment.html

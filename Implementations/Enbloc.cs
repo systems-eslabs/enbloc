@@ -77,7 +77,7 @@ namespace Enbloc
             //EmailNotWhiteListed,
             //MaxEmailLimitReached,
 
-            ReplyToEmail(email, baseObject);
+            //ReplyToEmail(email, baseObject);
             success = true;
             return success;
         }
@@ -105,28 +105,28 @@ namespace Enbloc
             switch (templateCode)
             {
                 case EnumTemplateCode.ErrorOccured:
-                    template = @"../Templates/ErrorOccured.html";
+                    template = "enbloc/Templates/ErrorOccured.html";
                     break;
                 case EnumTemplateCode.EmailIdNotListed:
-                    template = @"../Templates/EmailIdNotListed.html";
+                    template = "enbloc/Templates/EmailIdNotListed.html";
                     break;
                 case EnumTemplateCode.MaxEmailLimitReached:
-                    template = @"../Templates/MaxEmailLimitReached.html";
+                    template = "enbloc/Templates/MaxEmailLimitReached.html";
                     break;
                 case EnumTemplateCode.InvalidEmailSubject:
-                    template = @"../Templates/InvalidEmailSubject.html";
+                    template = "enbloc/Templates/InvalidEmailSubject.html";
                     break;
                 case EnumTemplateCode.NoExcelAttachment:
-                    template = @"../Templates/NoAttachment.html";
+                    template = "enbloc/Templates/NoAttachment.html";
                     break;
                 case EnumTemplateCode.ExcelNoRowsLimitReached:
-                    template = @"../Templates/ExcelNoRowsLimitReached.html";
+                    template = "enbloc/Templates/ExcelNoRowsLimitReached.html";
                     break;
                 case EnumTemplateCode.InvalidExcelFormat:
-                    template = @"../Templates/InvalidExcelFormat.html";
+                    template = "enbloc/Templates/InvalidExcelFormat.html";
                     break;
                 case EnumTemplateCode.EmailProcessed:
-                    template = @"../Templates/EmailProcessed.html";
+                    template = "enbloc/Templates/EmailProcessed.html";
                     break;
                 default:
                     template = "";
