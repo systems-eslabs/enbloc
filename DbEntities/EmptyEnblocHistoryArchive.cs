@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace enbloc.DbEntities
+namespace Enbloc.DbEntities
 {
     public partial class EmptyEnblocHistoryArchive
     {

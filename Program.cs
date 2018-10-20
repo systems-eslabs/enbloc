@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Linq;
 using EmailService;
 using OfficeOpenXml;
-//using enbloc.DbEntities;
 using Common;
 using System.Text;
-using enbloc.Entities;
+using Enbloc.Entities;
 using FluentValidation.Results;
+using Enbloc.DbEntities;
 
-namespace enbloc
+namespace Enbloc
 {
 
     class Program
@@ -51,9 +51,9 @@ namespace enbloc
                             //         break;
                             // }
 
-                           string replyTemplate = processEmail(mailService, email);
+                            string replyTemplate = processEmail(mailService, email);
 
-                           ReplyToEmail(mailService, email, replyTemplate);
+                            ReplyToEmail(mailService, email, replyTemplate);
                         }
                     });
                 }
@@ -156,14 +156,10 @@ namespace enbloc
             if (baseObject.Success)
             {
                 baseObject = ValidateEnbloc(lstEnblocSnapshot);
-            }
+            }          
 
             if (baseObject.Success)
             {
-                baseObject = SaveEnblocSnapshotToDB(lstEnblocSnapshot);
-            }
-
-            if(baseObject.Success){
                 baseObject = SaveEnblocToDB(lstEnblocSnapshot);
             }
             return mapTemplateToData(baseObject);
@@ -288,7 +284,7 @@ namespace enbloc
                 string voyage = Convert.ToString(worksheet.Cells["D4"].Value);
                 string agent_name = Convert.ToString(worksheet.Cells["B5"].Value);
                 string via_no = Convert.ToString(worksheet.Cells["D5"].Value);
-
+                string depot_name = Convert.ToString(worksheet.Cells["A3"].Value);
                 string transaction_no = programCode + transactionId;
 
                 for (int row = 8; row <= rowCount; row++)
@@ -300,8 +296,9 @@ namespace enbloc
                         enblocSnapshot.Vessel = vessel;
                         enblocSnapshot.Voyage = voyage;
                         enblocSnapshot.AgentName = agent_name;
+                        enblocSnapshot.DepotName = depot_name;
                         enblocSnapshot.ViaNo = via_no;
-                        enblocSnapshot.Date = document_date;
+                        enblocSnapshot.PermissionDate = document_date;
                         enblocSnapshot.Srl = Convert.ToString(worksheet.Cells[row, 1].Value).Trim();
                         enblocSnapshot.ContainerNo = Convert.ToString(worksheet.Cells[row, 2].Value).Trim();
                         enblocSnapshot.ContainerType = Convert.ToString(worksheet.Cells[row, 3].Value).Trim();
@@ -337,46 +334,37 @@ namespace enbloc
             Dictionary<string, string> obj = new Dictionary<string, string>();
             try
             {
-                EmptyEnblocSnapshotValidator validator = new EmptyEnblocSnapshotValidator();
-                ValidationResult results = validator.Validate(lstEnblocSnapshot.First());
+                EmptyEnblocValidatorCollectionValidator validator = new EmptyEnblocValidatorCollectionValidator();
 
                 if (lstEnblocSnapshot.Count > 1000)
                 {
                     baseObject.Success = false;
                     baseObject.Code = (int)TemplateCodes.NoRowsLimitReached;
                     baseObject.Data = obj;
+                    return baseObject;
                 }
+
                 // if vessel voyage no already exists and enbloc in progress then no processing 
-                else if (lstEnblocSnapshot.Count > 1000)
+
+                if (IsVesselVoyageExists(lstEnblocSnapshot.First().Vessel, lstEnblocSnapshot.First().Voyage))
                 {
                     baseObject.Success = false;
                     baseObject.Code = (int)TemplateCodes.ErrorOccured;
                     baseObject.Data = obj;
+                    return baseObject;
                 }
-                else
+
+                ValidationResult results = validator.Validate(lstEnblocSnapshot);
+                if (!results.IsValid)
                 {
-                    baseObject.Success = true;
+                    baseObject.Success = false;
+                    baseObject.Code = (int)TemplateCodes.ErrorOccured;
+                    baseObject.Data = obj;
+                    return baseObject;
                 }
-            }
-            catch (Exception ex)
-            {
-                baseObject.Success = false;
-                baseObject.Code = (int)TemplateCodes.ErrorOccured;
-                baseObject.Data = obj;
-            }
-            return baseObject;
-        }
 
-        private static BaseReturn<Dictionary<string, string>> SaveEnblocSnapshotToDB(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
-        {
-            BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
-            Dictionary<string, string> obj = new Dictionary<string, string>();
-            try
-            {
-                new EmpezarRepository<EmptyEnblocSnapshot>().AddRange(lstEnblocSnapshot);
                 baseObject.Success = true;
-                baseObject.Code = (int)TemplateCodes.EmailProcessed;
-                baseObject.Data = obj;
+
             }
             catch (Exception ex)
             {
@@ -386,8 +374,6 @@ namespace enbloc
             }
             return baseObject;
         }
-
-
         private static void ReplyToEmail(Mail mailService, Email mail, string replayMsg)
         {
             mailService.sendMailReply(mail.MailId, replayMsg);
@@ -397,12 +383,64 @@ namespace enbloc
         private static BaseReturn<Dictionary<string, string>> SaveEnblocToDB(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
         {
 
-
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
             try
             {
-                new EmpezarRepository<EmptyEnblocSnapshot>().AddRange(lstEnblocSnapshot);
+                var enblocFromSnapshot = lstEnblocSnapshot.First();
+                string vesselno = enblocFromSnapshot.Vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim()) + enblocFromSnapshot.Voyage.ToString();
+
+                EmptyEnbloc objEnbloc = new EmptyEnbloc()
+                {
+                    Vessel = enblocFromSnapshot.Vessel,
+                    Voyage = enblocFromSnapshot.Voyage,
+                    VesselNo = vesselno,
+                    AgentName = enblocFromSnapshot.AgentName,
+                    ViaNo = enblocFromSnapshot.ViaNo,
+                    PermissionDate = enblocFromSnapshot.PermissionDate,
+                    DepotName = enblocFromSnapshot.DepotName,
+                    TransactionId = enblocFromSnapshot.TransactionId,
+                    CreatedBy = 0
+                };
+
+                new EmpezarRepository<EmptyEnbloc>().Add(objEnbloc);
+
+
+                List<EmptyEnblocContainers> lstEmptyEnblocContainers = new List<EmptyEnblocContainers>();
+                lstEnblocSnapshot.ForEach(enblocContainer =>
+                {
+                    lstEmptyEnblocContainers.Add(new EmptyEnblocContainers()
+                    {
+                        TransactionId = enblocContainer.TransactionId,
+                        Vessel = enblocContainer.Vessel,
+                        Voyage = enblocContainer.Voyage,
+                        VesselNo = vesselno,
+                        Srl = enblocContainer.Srl,
+                        ContainerNo = enblocContainer.ContainerNo,
+                        ContainerSize = Convert.ToInt16(enblocContainer.ContainerType.Substring(0, 2)),
+                        ContainerType = enblocContainer.ContainerType.Substring(2, 2),
+                        Wt = enblocContainer.Wt,
+                        Cargo = enblocContainer.Cargo,
+                        IsoCode = enblocContainer.IsoCode,
+                        SealNo1 = enblocContainer.SealNo1,
+                        SealNo2 = enblocContainer.SealNo2,
+                        SealNo3 = enblocContainer.SealNo3,
+                        ImdgClass = enblocContainer.ImdgClass,
+                        ReferTemrature = enblocContainer.ReferTemrature,
+                        OogDeatils = enblocContainer.OogDeatils,
+                        ContainerGrossDetails = enblocContainer.ContainerGrossDetails,
+                        CargoDescription = enblocContainer.CargoDescription,
+                        BlNumber = enblocContainer.BlNumber,
+                        Name = enblocContainer.Name,
+                        ItemNo = enblocContainer.ItemNo,
+                        DisposalMode = enblocContainer.DisposalMode,
+                        CreatedBy = 0
+                    });
+                });
+
+                new EmpezarRepository<EmptyEnblocContainers>().AddRange(lstEmptyEnblocContainers);
+
+
                 baseObject.Success = true;
                 baseObject.Code = (int)TemplateCodes.EmailProcessed;
                 baseObject.Data = obj;
@@ -416,7 +454,12 @@ namespace enbloc
             return baseObject;
         }
 
-       
+        private static bool IsVesselVoyageExists(string vessel, string voyage)
+        {
+            string vesselno = vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim()) + voyage;
+            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.VesselNo == vesselno);
+        }
+
         //Get Emails 
 
         // Process Attachments 
