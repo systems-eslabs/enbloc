@@ -15,13 +15,13 @@ namespace Enbloc.DbEntities
         {
         }
 
-        public virtual DbSet<EmptyEnbloc> EmptyEnbloc { get; set; }
-        public virtual DbSet<EmptyEnblocArchive> EmptyEnblocArchive { get; set; }
-        public virtual DbSet<EmptyEnblocContainers> EmptyEnblocContainers { get; set; }
-        public virtual DbSet<EmptyEnblocContainersHistory> EmptyEnblocContainersHistory { get; set; }
-        public virtual DbSet<EmptyEnblocContainersHistoryArchive> EmptyEnblocContainersHistoryArchive { get; set; }
-        public virtual DbSet<EmptyEnblocHistory> EmptyEnblocHistory { get; set; }
-        public virtual DbSet<EmptyEnblocHistoryArchive> EmptyEnblocHistoryArchive { get; set; }
+        public virtual DbSet<LoadedEnbloc> LoadedEnbloc { get; set; }
+        public virtual DbSet<LoadedEnblocArchive> LoadedEnblocArchive { get; set; }
+        public virtual DbSet<LoadedEnblocContainers> LoadedEnblocContainers { get; set; }
+        public virtual DbSet<LoadedEnblocContainersHistory> LoadedEnblocContainersHistory { get; set; }
+        public virtual DbSet<LoadedEnblocContainersHistoryArchive> LoadedEnblocContainersHistoryArchive { get; set; }
+        public virtual DbSet<LoadedEnblocHistory> LoadedEnblocHistory { get; set; }
+        public virtual DbSet<LoadedEnblocHistoryArchive> LoadedEnblocHistoryArchive { get; set; }
         public virtual DbSet<MasterStatus> MasterStatus { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -36,9 +36,9 @@ password=vijay@123;database=empezar");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EmptyEnbloc>(entity =>
+            modelBuilder.Entity<LoadedEnbloc>(entity =>
             {
-                entity.ToTable("empty_enbloc");
+                entity.ToTable("loaded_enbloc");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -98,9 +98,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(10)");
             });
 
-            modelBuilder.Entity<EmptyEnblocArchive>(entity =>
+            modelBuilder.Entity<LoadedEnblocArchive>(entity =>
             {
-                entity.ToTable("empty_enbloc_archive");
+                entity.ToTable("loaded_enbloc_archive");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -167,9 +167,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(10)");
             });
 
-            modelBuilder.Entity<EmptyEnblocContainers>(entity =>
+            modelBuilder.Entity<LoadedEnblocContainers>(entity =>
             {
-                entity.ToTable("empty_enbloc_containers");
+                entity.ToTable("loaded_enbloc_containers");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -291,9 +291,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(500)");
             });
 
-            modelBuilder.Entity<EmptyEnblocContainersHistory>(entity =>
+            modelBuilder.Entity<LoadedEnblocContainersHistory>(entity =>
             {
-                entity.ToTable("empty_enbloc_containers_history");
+                entity.ToTable("loaded_enbloc_containers_history");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -428,9 +428,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(500)");
             });
 
-            modelBuilder.Entity<EmptyEnblocContainersHistoryArchive>(entity =>
+            modelBuilder.Entity<LoadedEnblocContainersHistoryArchive>(entity =>
             {
-                entity.ToTable("empty_enbloc_containers_history_archive");
+                entity.ToTable("loaded_enbloc_containers_history_archive");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -573,9 +573,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(500)");
             });
 
-            modelBuilder.Entity<EmptyEnblocHistory>(entity =>
+            modelBuilder.Entity<LoadedEnblocHistory>(entity =>
             {
-                entity.ToTable("empty_enbloc_history");
+                entity.ToTable("loaded_enbloc_history");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -639,9 +639,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(50)");
             });
 
-            modelBuilder.Entity<EmptyEnblocHistoryArchive>(entity =>
+            modelBuilder.Entity<LoadedEnblocHistoryArchive>(entity =>
             {
-                entity.ToTable("empty_enbloc_history_archive");
+                entity.ToTable("loaded_enbloc_history_archive");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
