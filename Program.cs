@@ -228,7 +228,7 @@ namespace Enbloc
                     Filename = attachment.Filename
                 }).ToList();
 
-                email.Attachments = mailService.getAttachments(email.MailId, attachmentRequest).Data;
+                email.Attachments = mailService.getAttachments(email, attachmentRequest).Data;
                 baseObject.Success = true;
 
             }
@@ -376,7 +376,7 @@ namespace Enbloc
         }
         private static void ReplyToEmail(Mail mailService, Email mail, string replayMsg)
         {
-            mailService.sendMailReply(mail.MailId, replayMsg);
+            mailService.sendMailReply(mail, replayMsg);
         }
 
 

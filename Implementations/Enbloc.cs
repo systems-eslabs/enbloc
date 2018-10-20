@@ -95,7 +95,7 @@ namespace Enbloc
                 });
             }
             replyMessage = result.ToString();
-            mailService.sendMailReply(email.MailId, replyMessage);
+            mailService.sendMailReply(email, replyMessage);
         }
 
 

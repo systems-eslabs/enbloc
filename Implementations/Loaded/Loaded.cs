@@ -85,7 +85,7 @@ namespace Enbloc
                     Filename = attachment.Filename
                 }).ToList();
 
-                email.Attachments = mailService.getAttachments(email.MailId, attachmentRequest).Data;
+                email.Attachments = mailService.getAttachments(email, attachmentRequest).Data;
                 baseObject.Success = true;
 
             }
