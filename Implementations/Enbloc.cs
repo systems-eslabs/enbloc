@@ -123,7 +123,7 @@ namespace Enbloc
                     template = "enbloc/Templates/ExcelNoRowsLimitReached.html";
                     break;
                 case EnumTemplateCode.InvalidExcelFormat:
-                    string errors = "<li>" + baseObject.Data.Select(x => x.Value).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
+                    string errors = "<li>" + baseObject.Data.Where(x => x.Key != "[{{transactionNo}}]").Select(x => x.Value).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
                     baseObject.Data.Add("[{{errors}}]",errors);
                     template = "enbloc/Templates/InvalidExcelFormat.html";
                     break;
