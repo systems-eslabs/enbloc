@@ -12,7 +12,7 @@ using Enbloc.Entities;
 
 namespace Enbloc
 {
-    public class Loaded
+    public partial class Loaded
     {
         Mail mailService = null;
 
@@ -198,7 +198,7 @@ namespace Enbloc
 
                 if (IsVesselVoyageExists(lstEnblocSnapshot.First().Vessel, lstEnblocSnapshot.First().Voyage))
                 {
-                    obj.Add("[{{errors}}]", "<li>Vessel Voyage already exists</li>");
+                    obj.Add("0", "Vessel Voyage already exists");
                     baseObject.Success = false;
                     baseObject.Code = (int)EnumTemplateCode.InvalidExcelFormat;
                     baseObject.Data = obj;
@@ -208,8 +208,11 @@ namespace Enbloc
                 ValidationResult results = validator.Validate(lstEnblocSnapshot);
                 if (!results.IsValid)
                 {
-                    string errorMessage = "<li>" + results.Errors.Select(x => x.ErrorMessage).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
-                    obj.Add("[{{errors}}]", errorMessage);
+                    int selectIndex = 0;
+                    results.Errors.Select(x => x.ErrorMessage).Distinct().ToList().ForEach(error =>
+                    {
+                        obj.Add(Convert.ToString(selectIndex++), error);
+                    });
                     baseObject.Success = false;
                     baseObject.Code = (int)EnumTemplateCode.InvalidExcelFormat;
                     baseObject.Data = obj;
