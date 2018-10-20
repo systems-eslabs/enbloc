@@ -4,8 +4,11 @@ using System.IO;
 using System.Linq;
 using EmailService;
 using OfficeOpenXml;
-using enbloc.DbEntities;
+//using enbloc.DbEntities;
 using Common;
+using System.Text;
+using enbloc.DTOs;
+using FluentValidation.Results;
 
 namespace enbloc
 {
@@ -36,17 +39,21 @@ namespace enbloc
                     {
                         if (validateMail(email))
                         {
-                            switch (email.Subject.Trim().ToLower())
-                            {
-                                case "enbloc.loaded":
-                                    break;
-                                case "enbloc.empty":
-                                    break;
-                                default:
-                                    var replyTemplate = getTemplate(TemplateCodes.InvalidSubject);
-                                    ReplyTonEmail(mailService, mail, replyTemplate);
-                                    break;
-                            }
+                            // switch (email.Subject.Trim().ToLower())
+                            // {
+                            //     case "enbloc.loaded":
+                            //         break;
+                            //     case "enbloc.empty":
+                            //         break;
+                            //     default:
+                            //         var replyTemplate = getTemplate(TemplateCodes.InvalidSubject);
+                            //         //ReplyToEmail(mailService, mail, replyTemplate);
+                            //         break;
+                            // }
+
+                           string replyTemplate = processEmail(mailService, email);
+
+                           ReplyToEmail(mailService, email, replyTemplate);
                         }
                     });
                 }
@@ -91,13 +98,14 @@ namespace enbloc
 
 
 
-        private bool validateMail(Email mail)
+        private static bool validateMail(Email mail)
         {
             //EmailNotWhiteListed,
             //MaxEmailLimitReached,
+            return true;
         }
 
-        private string getTemplate(TemplateCodes templateCode)
+        private static string getTemplate(TemplateCodes templateCode)
         {
             string template = "";
             switch (templateCode)
@@ -128,10 +136,12 @@ namespace enbloc
                     break;
             }
 
+            return template;
+
         }
 
 
-        public string processEmail(Mail mailService, Email email)
+        public static string processEmail(Mail mailService, Email email)
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             List<EmptyEnblocSnapshot> lstEnblocSnapshot = new List<EmptyEnblocSnapshot>();
@@ -150,26 +160,29 @@ namespace enbloc
 
             if (baseObject.Success)
             {
-                baseObject = SaveEnblocToDB(lstEnblocSnapshot);
+                baseObject = SaveEnblocSnapshotToDB(lstEnblocSnapshot);
             }
 
+            if(baseObject.Success){
+                baseObject = SaveEnblocToDB(lstEnblocSnapshot);
+            }
             return mapTemplateToData(baseObject);
         }
 
-        private string mapTemplateToData(BaseReturn<Dictionary<string, string>> baseObject)
+        private static string mapTemplateToData(BaseReturn<Dictionary<string, string>> baseObject)
         {
             string replyMessage = "";
             try
             {
-                StringBuilder result = new StringBuilder(getTemplate(baseObject.Code));
+                StringBuilder result = new StringBuilder(getTemplate((TemplateCodes)baseObject.Code));
                 if (baseObject.Data != null)
                 {
-                    baseObject.Data.ForEach(obj =>
+                    baseObject.Data.ToList().ForEach(obj =>
                     {
                         result.Replace(obj.Key, obj.Value);
                     });
                 }
-                replyMessage = Convert.FromBase64String(result.ToString());
+                replyMessage = result.ToString();
             }
             catch (Exception ex)
             {
@@ -179,7 +192,7 @@ namespace enbloc
         }
 
 
-        private BaseReturn<Dictionary<string, string>> GetEmailAttachments(Mail mailService, Email mail)
+        private static BaseReturn<Dictionary<string, string>> GetEmailAttachments(Mail mailService, Email email)
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
@@ -190,25 +203,25 @@ namespace enbloc
                 if (!email.Attachments.Any())
                 {
                     baseObject.Success = false;
-                    baseObject.Code = TemplateCodes.NoAttachment;
+                    baseObject.Code = (int)TemplateCodes.NoAttachment;
                     baseObject.Data = obj;
                     return baseObject;
                 }
 
-                var attachments = mail.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX)).ToList();
+                var attachments = email.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX)).ToList();
 
                 if (!attachments.Any())
                 {
                     baseObject.Success = false;
-                    baseObject.Code = TemplateCodes.NoAttachment;
+                    baseObject.Code = (int)TemplateCodes.NoAttachment;
                     baseObject.Data = obj;
                     return baseObject;
                 }
 
-                if (!attachments.count > 1) // Invalid no. of attachments
+                if (attachments.Count > 1) // Invalid no. of attachments
                 {
                     baseObject.Success = false;
-                    baseObject.Code = TemplateCodes.InvalidNoOfAttachment;
+                    baseObject.Code = (int)TemplateCodes.InvalidNoOfAttachment;
                     baseObject.Data = obj;
                     return baseObject;
                 }
@@ -219,35 +232,35 @@ namespace enbloc
                     Filename = attachment.Filename
                 }).ToList();
 
-                mail.Attachments = mailService.getAttachments(mail.MailId, attachmentRequest).Data;
+                email.Attachments = mailService.getAttachments(email.MailId, attachmentRequest).Data;
                 baseObject.Success = true;
 
             }
             catch (Exception ex)
             {
                 baseObject.Success = false;
-                baseObject.Code = TemplateCodes.ErrorOccured;
+                baseObject.Code = (int)TemplateCodes.ErrorOccured;
                 baseObject.Data = obj;
             }
             return baseObject;
         }
 
 
-        private BaseReturn<Dictionary<string, string>> ProcessEmailAttachments(Mail mailService, Email email, List<EmptyEnblocSnapshot> lstEnblocSnapshot)
+        private static BaseReturn<Dictionary<string, string>> ProcessEmailAttachments(Mail mailService, Email email, List<EmptyEnblocSnapshot> lstEnblocSnapshot)
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
             try
             {
-                FileInfo file = new FileInfo(mail.localUrl);
-                lstEnblocSnapshot = ProcessEnbloc(file, "EM");
+                FileInfo file = new FileInfo(email.Attachments.First().localUrl);
+                ProcessEnbloc(file, "EM", email.TransactionId, lstEnblocSnapshot);
 
                 baseObject.Success = true;
             }
             catch (Exception ex)
             {
                 baseObject.Success = false;
-                baseObject.Code = TemplateCodes.NoAttachment;
+                baseObject.Code = (int)TemplateCodes.NoAttachment;
                 baseObject.Data = obj;
             }
             return baseObject;
@@ -260,11 +273,12 @@ namespace enbloc
         }
 
 
-        private List<EmptyEnblocSnapshot> ProcessEnbloc(FileInfo file, string programCode)
+        private static void ProcessEnbloc(FileInfo file, string programCode, int transactionId, List<EmptyEnblocSnapshot> lstEnblocSnapshot)
         {
+            //List<EmptyEnblocSnapshot> lstEnblocSnapshot = new List<EmptyEnblocSnapshot>();
             using (ExcelPackage package = new ExcelPackage(file))
             {
-                List<EmptyEnblocSnapshot> lstEnblocSnapshot = new List<EmptyEnblocSnapshot>();
+
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
                 int rowCount = worksheet.Dimension.Rows;
                 int ColCount = worksheet.Dimension.Columns;
@@ -275,7 +289,7 @@ namespace enbloc
                 string agent_name = Convert.ToString(worksheet.Cells["B5"].Value);
                 string via_no = Convert.ToString(worksheet.Cells["D5"].Value);
 
-                string transaction_no = programCode + email.TransactionId;
+                string transaction_no = programCode + transactionId;
 
                 for (int row = 8; row <= rowCount; row++)
                 {
@@ -306,33 +320,37 @@ namespace enbloc
                         enblocSnapshot.Name = Convert.ToString(worksheet.Cells[row, 16].Value).Trim();
                         enblocSnapshot.ItemNo = Convert.ToString(worksheet.Cells[row, 17].Value).Trim();
                         enblocSnapshot.DisposalMode = Convert.ToString(worksheet.Cells[row, 18].Value).Trim();
-                        enblocSnapshot.CreatedBy = 123;//Convert.ToString(worksheet.Cells[row, 19].Value).Trim();
+                        enblocSnapshot.CreatedBy = 0;//Convert.ToString(worksheet.Cells[row, 19].Value).Trim();
 
                         lstEnblocSnapshot.Add(enblocSnapshot);
                     }
                 }
             }
 
-            return lstEnblocSnapshot;
+
+            //return lstEnblocSnapshot;
         }
 
-        private BaseReturn<Dictionary<string, string>> ValidateEnbloc(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
+        private static BaseReturn<Dictionary<string, string>> ValidateEnbloc(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
             try
             {
+                EmptyEnblocSnapshotValidator validator = new EmptyEnblocSnapshotValidator();
+                ValidationResult results = validator.Validate(lstEnblocSnapshot.First());
+
                 if (lstEnblocSnapshot.Count > 1000)
                 {
                     baseObject.Success = false;
-                    baseObject.Code = TemplateCodes.NoRowsLimitReached;
+                    baseObject.Code = (int)TemplateCodes.NoRowsLimitReached;
                     baseObject.Data = obj;
                 }
                 // if vessel voyage no already exists and enbloc in progress then no processing 
                 else if (lstEnblocSnapshot.Count > 1000)
                 {
                     baseObject.Success = false;
-                    baseObject.Code = TemplateCodes.ErrorOccured;
+                    baseObject.Code = (int)TemplateCodes.ErrorOccured;
                     baseObject.Data = obj;
                 }
                 else
@@ -343,13 +361,13 @@ namespace enbloc
             catch (Exception ex)
             {
                 baseObject.Success = false;
-                baseObject.Code = TemplateCodes.ErrorOccured;
+                baseObject.Code = (int)TemplateCodes.ErrorOccured;
                 baseObject.Data = obj;
             }
             return baseObject;
         }
 
-        private BaseReturn<Dictionary<string, string>> SaveEnblocToDB(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
+        private static BaseReturn<Dictionary<string, string>> SaveEnblocSnapshotToDB(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
@@ -357,13 +375,13 @@ namespace enbloc
             {
                 new EmpezarRepository<EmptyEnblocSnapshot>().AddRange(lstEnblocSnapshot);
                 baseObject.Success = true;
-                baseObject.Code = TemplateCodes.EmailProcessed;
+                baseObject.Code = (int)TemplateCodes.EmailProcessed;
                 baseObject.Data = obj;
             }
             catch (Exception ex)
             {
                 baseObject.Success = false;
-                baseObject.Code = TemplateCodes.ErrorOccured;
+                baseObject.Code = (int)TemplateCodes.ErrorOccured;
                 baseObject.Data = obj;
             }
             return baseObject;
@@ -376,6 +394,29 @@ namespace enbloc
         }
 
 
+        private static BaseReturn<Dictionary<string, string>> SaveEnblocToDB(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
+        {
+
+
+            BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
+            Dictionary<string, string> obj = new Dictionary<string, string>();
+            try
+            {
+                new EmpezarRepository<EmptyEnblocSnapshot>().AddRange(lstEnblocSnapshot);
+                baseObject.Success = true;
+                baseObject.Code = (int)TemplateCodes.EmailProcessed;
+                baseObject.Data = obj;
+            }
+            catch (Exception ex)
+            {
+                baseObject.Success = false;
+                baseObject.Code = (int)TemplateCodes.ErrorOccured;
+                baseObject.Data = obj;
+            }
+            return baseObject;
+        }
+
+       
         //Get Emails 
 
         // Process Attachments 
