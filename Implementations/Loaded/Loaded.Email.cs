@@ -185,7 +185,7 @@ namespace Enbloc
             {
                 LoadedEnblocValidatorCollectionValidator validator = new LoadedEnblocValidatorCollectionValidator();
 
-                obj.Add("[{{transactionNo}}]", Convert.ToString(lstEnblocSnapshot.First().TransactionId));
+                obj.Add("transactionNo", Convert.ToString(lstEnblocSnapshot.First().TransactionId));
                 if (lstEnblocSnapshot.Count > 1000)
                 {
                     baseObject.Success = false;

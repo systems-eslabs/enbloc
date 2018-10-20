@@ -47,7 +47,7 @@ namespace Enbloc
                                     break;
                                 default:
                                     Dictionary<string, string> obj = new Dictionary<string, string>();
-                                    obj.Add("[{{transactionNo}}]", Convert.ToString(email.TransactionId));
+                                    obj.Add("transactionNo", Convert.ToString(email.TransactionId));
                                     baseObject.Code = (int)EnumTemplateCode.InvalidEmailSubject;
                                     baseObject.Data = obj;
                                     break;
@@ -102,6 +102,12 @@ namespace Enbloc
         private static string getTemplate(BaseReturn<Dictionary<string, string>> baseObject)
         {
             string template = "";
+            Dictionary<string, string> obj = new Dictionary<string, string>();
+            baseObject.Data.ToList().ForEach(x =>
+                    {
+                        obj.Add("[{{" + x.Key + "}}]", x.Value);
+                    });
+            baseObject.Data = obj;
             switch ((EnumTemplateCode)baseObject.Code)
             {
                 case EnumTemplateCode.ErrorOccured:
@@ -124,7 +130,7 @@ namespace Enbloc
                     break;
                 case EnumTemplateCode.InvalidExcelFormat:
                     string errors = "<li>" + baseObject.Data.Where(x => x.Key != "[{{transactionNo}}]").Select(x => x.Value).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
-                    baseObject.Data.Add("[{{errors}}]",errors);
+                    baseObject.Data.Add("[{{errors}}]", errors);
                     template = "enbloc/Templates/InvalidExcelFormat.html";
                     break;
                 case EnumTemplateCode.EmailProcessed:
