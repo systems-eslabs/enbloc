@@ -124,6 +124,15 @@ namespace Enbloc
 
             try
             {
+                if (lstEnblocSnapshot.Count == 0)
+                {
+                    obj.Add("errors", "Excel Attachment does not contain any container data.");
+                    baseObject.Success = false;
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
+                    baseObject.Data = obj;
+                    return baseObject;
+                }
+
                 if (lstEnblocSnapshot.Count > 1000)
                 {
                     obj.Add("errors", "Maximum 1000 rows are allowed in the Excel Attachment.");
@@ -133,15 +142,16 @@ namespace Enbloc
                     return baseObject;
                 }
 
-                // // if vessel voyage no already exists and enbloc in progress then no processing 
-                // if (IsVesselVoyageExists(lstEnblocSnapshot.First().Vessel, ""))
-                // {
-                //     obj.Add("0", "Vessel Voyage already exists");
-                //     baseObject.Success = false;
-                //     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
-                //     baseObject.Data = obj;
-                //     return baseObject;
-                // }
+
+                // if vessel voyage no already exists and enbloc in progress then no processing 
+                if (IsEnblocExists(lstEnblocSnapshot))
+                {
+                    obj.Add("0", "Enbloc already exists in the system");
+                    baseObject.Success = false;
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
+                    baseObject.Data = obj;
+                    return baseObject;
+                }
 
                 ValidationResult results = ValidateEnblocData(lstEnblocSnapshot);
                 if (!results.IsValid)
@@ -174,15 +184,13 @@ namespace Enbloc
 
         protected abstract BaseReturn<Dictionary<string, string>> SaveEnblocToDB<T>(Email email, IEnumerable<T> lstEnblocSnapshot);
 
-
-        protected abstract bool IsVesselVoyageExists(string vessel, string voyage);
-
         protected abstract ValidationResult ValidateEnblocData<T>(IEnumerable<T> lstEnblocSnapshot);
+
+        protected abstract bool IsEnblocExists<T>(IEnumerable<T> lstEnblocSnapshot);
 
         protected static int GetColumnIndexByName(ExcelWorksheet ws, string columnName)
         {
             return ws.Cells["1:1"].First(c => c.Value.ToString() == columnName).Start.Column;
         }
-
     }
 }

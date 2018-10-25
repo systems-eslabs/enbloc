@@ -26,21 +26,6 @@ namespace Enbloc
             return base.processEmail<LoadedEnblocSnapshot>(email);
         }
 
-        private new BaseReturn<Dictionary<string, string>> GetEmailAttachments(Email email)
-        {
-            return base.GetEmailAttachments(email);
-        }
-
-        private BaseReturn<Dictionary<string, string>> ProcessEmailAttachments(Email email, List<LoadedEnblocSnapshot> lstEnblocSnapshot)
-        {
-            return base.ProcessEmailAttachments<LoadedEnblocSnapshot>(email, lstEnblocSnapshot);
-        }
-
-        private BaseReturn<Dictionary<string, string>> ValidateEnbloc(Email email, List<LoadedEnblocSnapshot> lstEnblocSnapshot)
-        {
-            return base.ValidateEnbloc(email, lstEnblocSnapshot);
-        }
-
         protected override void ProcessEnbloc<T>(FileInfo file, string programCode, int transactionId, IEnumerable<T> baselstEnblocSnapshot)
         {
             var lstEnblocSnapshot = (List<LoadedEnblocSnapshot>)baselstEnblocSnapshot;
@@ -51,14 +36,14 @@ namespace Enbloc
                 int rowCount = worksheet.Dimension.Rows;
                 int ColCount = worksheet.Dimension.Columns;
 
-                string document_date = Convert.ToString(worksheet.Cells["C1"].Value);
-                string vessel = Convert.ToString(worksheet.Cells["B4"].Value);
-                string voyage = Convert.ToString(worksheet.Cells["D4"].Value);
-                string agent_name = Convert.ToString(worksheet.Cells["B5"].Value);
-                string via_no = Convert.ToString(worksheet.Cells["D5"].Value);
-                string depot_name = Convert.ToString(worksheet.Cells["A3"].Value);
+                string document_date = Convert.ToString(worksheet.Cells["C1"].Value).Trim();
+                string vessel = Convert.ToString(worksheet.Cells["B4"].Value).Trim();
+                string voyage = Convert.ToString(worksheet.Cells["D4"].Value).Trim();
+                string agent_name = Convert.ToString(worksheet.Cells["B5"].Value).Trim();
+                string via_no = Convert.ToString(worksheet.Cells["D5"].Value).Trim();
+                string depot_name = Convert.ToString(worksheet.Cells["A3"].Value).Trim();
                 string transaction_no = programCode + transactionId;
-
+                string enblocNumber = (vessel.Replace(" ","") + voyage).ToUpper();
                 for (int row = 8; row <= rowCount; row++)
                 {
                     if (Convert.ToString(worksheet.Cells[row, 1].Value).Trim() != "")
@@ -70,6 +55,7 @@ namespace Enbloc
                         enblocSnapshot.AgentName = agent_name;
                         enblocSnapshot.DepotName = depot_name;
                         enblocSnapshot.ViaNo = via_no;
+                        enblocSnapshot.EnblocNumber = enblocNumber;
                         enblocSnapshot.PermissionDate = document_date;
                         enblocSnapshot.Srl = Convert.ToString(worksheet.Cells[row, 1].Value).Trim();
                         enblocSnapshot.ContainerNo = Convert.ToString(worksheet.Cells[row, 2].Value).Trim();
@@ -173,10 +159,11 @@ namespace Enbloc
             return baseObject;
         }
 
-        protected override bool IsVesselVoyageExists(string vessel, string voyage)
+
+        protected override bool IsEnblocExists<T>(IEnumerable<T> lstEnblocSnapshot)
         {
-            string enblocno = vessel.Replace(" ", "") + voyage;
-            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.EnblocNumber == enblocno && x.Status != Status.COMPLETED);
+            var enblocData = ((List<LoadedEnblocSnapshot>) lstEnblocSnapshot).First();
+            return new EmpezarRepository<LoadedEnbloc>().IsExists(x => x.EnblocNumber == enblocData.EnblocNumber && x.Status != Status.COMPLETED);
         }
 
         protected override ValidationResult ValidateEnblocData<T>(IEnumerable<T> lstEnblocSnapshot)

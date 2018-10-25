@@ -12,6 +12,8 @@ namespace Enbloc.Entities
         public string TransactionId { get; set; }
         public string Vessel { get; set; }
         public string ViaNo { get; set; }
+
+        public string EnblocNumber { get; set; }
         public string ContainerNo { get; set; }
         public string ContainerSize { get; set; }
         public string ContainerType { get; set; }

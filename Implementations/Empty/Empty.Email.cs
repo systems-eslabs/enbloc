@@ -26,21 +26,6 @@ namespace Enbloc
             return base.processEmail<EmptyEnblocSnapshot>(email);
         }
 
-        private new BaseReturn<Dictionary<string, string>> GetEmailAttachments(Email email)
-        {
-            return base.GetEmailAttachments(email);
-        }
-
-        private BaseReturn<Dictionary<string, string>> ProcessEmailAttachments(Email email, List<EmptyEnblocSnapshot> lstEnblocSnapshot)
-        {
-            return base.ProcessEmailAttachments<EmptyEnblocSnapshot>(email, lstEnblocSnapshot);
-        }
-
-        private BaseReturn<Dictionary<string, string>> ValidateEnbloc(Email email, List<EmptyEnblocSnapshot> lstEnblocSnapshot)
-        {
-            return base.ValidateEnbloc(email, lstEnblocSnapshot);
-        }
-
         protected override void ProcessEnbloc<T>(FileInfo file, string programCode, int transactionId, IEnumerable<T> baselstEnblocSnapshot)
         {
             var lstEnblocSnapshot = (List<EmptyEnblocSnapshot>)baselstEnblocSnapshot;
@@ -61,6 +46,7 @@ namespace Enbloc
                         enblocSnapshot.TransactionId = transaction_no;
                         enblocSnapshot.Vessel = Convert.ToString(worksheet.Cells[row, GetColumnIndexByName(worksheet, "Vsl Name(D)")].Value).Trim();
                         enblocSnapshot.ViaNo = Convert.ToString(worksheet.Cells[row, GetColumnIndexByName(worksheet, "VIA(D)")].Value).Trim();
+                        enblocSnapshot.EnblocNumber = enblocSnapshot.ViaNo.ToUpper();
                         enblocSnapshot.ContainerNo = Convert.ToString(worksheet.Cells[row, GetColumnIndexByName(worksheet, "Container Number")].Value).Trim();
                         enblocSnapshot.ContainerSize = Convert.ToString(worksheet.Cells[row, GetColumnIndexByName(worksheet, "CtrSize")].Value).Trim();
                         enblocSnapshot.ContainerType = Convert.ToString(worksheet.Cells[row, GetColumnIndexByName(worksheet, "CtrType")].Value).Trim();
@@ -132,10 +118,10 @@ namespace Enbloc
             return baseObject;
         }
 
-        protected override bool IsVesselVoyageExists(string vessel, string voyage)
+        protected override bool IsEnblocExists<T>(IEnumerable<T> lstEnblocSnapshot)
         {
-            string enblocno = vessel.Replace(" ", "") + voyage;
-            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.EnblocNumber == enblocno && x.Status != Status.COMPLETED);
+            var enblocData = ((List<EmptyEnblocSnapshot>) lstEnblocSnapshot).First();
+            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.EnblocNumber == enblocData.EnblocNumber && x.Status != Status.COMPLETED);
         }
 
 
