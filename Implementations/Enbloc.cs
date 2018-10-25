@@ -75,32 +75,43 @@ namespace Enbloc
             bool success = false;
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
-
-            MailAddress address = new MailAddress(email.From);
-
-
-            if (Config.enblocwhitelistDomains.Split(",").Any(id => id == address.Host))
+            obj.Add("transactionNo", Convert.ToString(email.TransactionId));
+            try
             {
-                obj.Add("errors", "Email Domain Not Listed With Empezar.");
+                MailAddress address = new MailAddress(email.From);
 
+                if (Config.enblocwhitelistDomains.Split(",").Any(id => id == address.Host))
+                {
+                    obj.Add("errors", "Email Domain Not Listed With Empezar.");
+                    baseObject.Success = false;
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
+                    baseObject.Data = obj;
+                }
+                else if (Config.enblocwhitelistEmailIds.Split(",").Any(id => id == email.From.ToLower()))
+                {
+                    obj.Add("errors", "Email Id Not Listed With Empezar.");
+                    baseObject.Success = false;
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
+                    baseObject.Data = obj;
+                }
+                else
+                {
+                    success = true;
+                }
+            }
+            catch (Exception ex)
+            {
                 baseObject.Success = false;
-                baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
+                baseObject.Code = (int)EnumTemplateCode.ErrorOccured;
                 baseObject.Data = obj;
             }
-            if (Config.enblocwhitelistEmailIds.Split(",").Any(id => id == email.From.ToLower()))
+            finally
             {
-                obj.Add("errors", "Email Id Not Listed With Empezar.");
-                baseObject.Success = false;
-                baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
-                baseObject.Data = obj;
+                if (!success)
+                {
+                    ReplyToEmail(email, baseObject);
+                }
             }
-
-
-            //EmailNotWhiteListed,
-            //MaxEmailLimitReached,
-
-            ReplyToEmail(email, baseObject);
-            success = true;
             return success;
         }
 
