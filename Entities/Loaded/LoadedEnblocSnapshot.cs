@@ -43,9 +43,14 @@ namespace Enbloc.Entities
         public LoadedEnblocValidator()
         {
             RuleFor(enbloc => enbloc.Vessel).NotEmpty().WithMessage("Vessel field can not be empty");
-            RuleFor(enbloc => enbloc.Voyage).NotEmpty().WithMessage("ISO field can not be empty");
+            RuleFor(enbloc => enbloc.Voyage).NotEmpty().WithMessage("Voyage field can not be empty");
+            
             RuleFor(enbloc => enbloc.ContainerNo).Length(11).WithMessage("Container Number field should be 11 digit");
             RuleFor(enbloc => enbloc.ContainerNo).Must(IsChecksumMatched).WithMessage("Container Number does not match ISO 6346 Standards");
+
+            RuleFor(enbloc => enbloc.ContainerType).Length(4).WithMessage("ContainerType field should be 4 digit");
+
+            RuleFor(enbloc => enbloc.IsoCode).NotEmpty().WithMessage("ISO Code field can not be empty");
         }
 
         protected bool IsChecksumMatched(string containerNo)
