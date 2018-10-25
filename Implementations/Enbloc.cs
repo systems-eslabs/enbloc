@@ -120,7 +120,6 @@ namespace Enbloc
             mailService.sendMailReply(email, replyMessage);
         }
 
-
         private static string getTemplate(BaseReturn<Dictionary<string, string>> baseObject)
         {
             string template = "";

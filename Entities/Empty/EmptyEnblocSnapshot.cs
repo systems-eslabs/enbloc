@@ -30,11 +30,10 @@ namespace Enbloc.Entities
             RuleFor(enbloc => enbloc.ContainerNo).Length(11).WithMessage("Container Number field should be 11 digit");
             RuleFor(enbloc => enbloc.ContainerNo).Must(IsChecksumMatched).WithMessage("Container Number does not match ISO 6346 Standards");
 
-            RuleFor(enbloc => enbloc.ContainerType).Length(2).WithMessage("ContainerType field should be 4 digit");
-            RuleFor(enbloc => enbloc.ContainerSize).Length(2).WithMessage("ContainerSize field should be 4 digit");
+            RuleFor(enbloc => enbloc.ContainerType).Length(2).WithMessage("ContainerType field should be 2 digit");
+            RuleFor(enbloc => enbloc.ContainerSize).Length(2).WithMessage("ContainerSize field should be 2 digit");
 
             RuleFor(enbloc => enbloc.IsoCode).NotEmpty().WithMessage("ISO Code field can not be empty");
-
         }
 
         protected bool IsChecksumMatched(string containerNo)
