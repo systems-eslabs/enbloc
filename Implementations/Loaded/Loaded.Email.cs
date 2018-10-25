@@ -56,7 +56,8 @@ namespace Enbloc
                 if (!email.Attachments.Any())
                 {
                     baseObject.Success = false;
-                    baseObject.Code = (int)EnumTemplateCode.NoExcelAttachment;
+                    obj.Add("errors", "No attachments found.");                 
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
                     baseObject.Data = obj;
                     return baseObject;
                 }
@@ -66,15 +67,17 @@ namespace Enbloc
                 if (!attachments.Any())
                 {
                     baseObject.Success = false;
-                    baseObject.Code = (int)EnumTemplateCode.NoExcelAttachment;
+                    obj.Add("errors", "Email should contain exactly one excel attachment.");
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
                     baseObject.Data = obj;
                     return baseObject;
                 }
 
-                if (attachments.Count > 1) // Invalid no. of attachments
+                if (attachments.Count > 1)
                 {
                     baseObject.Success = false;
-                    baseObject.Code = (int)EnumTemplateCode.NoExcelAttachment;
+                    obj.Add("errors", "Email should contain exactly one excel attachment.");
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
                     baseObject.Data = obj;
                     return baseObject;
                 }
@@ -188,8 +191,9 @@ namespace Enbloc
                 obj.Add("transactionNo", Convert.ToString(lstEnblocSnapshot.First().TransactionId));
                 if (lstEnblocSnapshot.Count > 1000)
                 {
+                    obj.Add("errors", "Maximum 1000 rows are allowed in the Excel Attachment.");
                     baseObject.Success = false;
-                    baseObject.Code = (int)EnumTemplateCode.ExcelNoRowsLimitReached;
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
                     baseObject.Data = obj;
                     return baseObject;
                 }
@@ -200,7 +204,7 @@ namespace Enbloc
                 {
                     obj.Add("0", "Vessel Voyage already exists");
                     baseObject.Success = false;
-                    baseObject.Code = (int)EnumTemplateCode.InvalidExcelFormat;
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
                     baseObject.Data = obj;
                     return baseObject;
                 }
@@ -214,7 +218,7 @@ namespace Enbloc
                         obj.Add(Convert.ToString(selectIndex++), error);
                     });
                     baseObject.Success = false;
-                    baseObject.Code = (int)EnumTemplateCode.InvalidExcelFormat;
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
                     baseObject.Data = obj;
                     return baseObject;
                 }
