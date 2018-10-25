@@ -108,13 +108,13 @@ namespace Enbloc
             {
                 var lstEnblocSnapshot = (List<LoadedEnblocSnapshot>)baselstEnblocSnapshot;
                 var enblocFromSnapshot = lstEnblocSnapshot.First();
-                string vesselno = enblocFromSnapshot.Vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim()) + enblocFromSnapshot.Voyage.ToString();
+                string enbloclno = enblocFromSnapshot.Vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim()) + enblocFromSnapshot.Voyage.ToString();
 
                 LoadedEnbloc objEnbloc = new LoadedEnbloc()
                 {
                     Vessel = enblocFromSnapshot.Vessel,
                     Voyage = enblocFromSnapshot.Voyage,
-                    VesselNo = vesselno,
+                    EnblocNumber = enbloclno,
                     AgentName = enblocFromSnapshot.AgentName,
                     ViaNo = enblocFromSnapshot.ViaNo,
                     PermissionDate = enblocFromSnapshot.PermissionDate,
@@ -134,7 +134,7 @@ namespace Enbloc
                         TransactionId = enblocContainer.TransactionId,
                         Vessel = enblocContainer.Vessel,
                         Voyage = enblocContainer.Voyage,
-                        VesselNo = vesselno,
+                        EnblocNumber = enbloclno,
                         Srl = enblocContainer.Srl,
                         ContainerNo = enblocContainer.ContainerNo,
                         ContainerSize = Convert.ToInt16(enblocContainer.ContainerType.Substring(0, 2)),
@@ -175,8 +175,8 @@ namespace Enbloc
 
         protected override bool IsVesselVoyageExists(string vessel, string voyage)
         {
-            string vesselno = vessel.Replace(" ", "") + voyage;
-            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.VesselNo == vesselno && x.Status != Status.COMPLETED);
+            string enblocno = vessel.Replace(" ", "") + voyage;
+            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.EnblocNumber == enblocno && x.Status != Status.COMPLETED);
         }
 
         protected override ValidationResult ValidateEnblocData<T>(IEnumerable<T> lstEnblocSnapshot)

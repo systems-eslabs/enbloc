@@ -8,7 +8,7 @@ namespace Enbloc.DbEntities
         public long Id { get; set; }
         public string Vessel { get; set; }
         public string Voyage { get; set; }
-        public string VesselNo { get; set; }
+        public string EnblocNumber { get; set; }
         public string AgentName { get; set; }
         public string ViaNo { get; set; }
         public string PermissionDate { get; set; }

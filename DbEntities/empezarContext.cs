@@ -594,6 +594,11 @@ password=vijay@123;database=empezar");
                     .HasColumnName("depot_name")
                     .HasColumnType("varchar(150)");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.ModifiedBy)
                     .HasColumnName("modified_by")
                     .HasColumnType("int(11)");
@@ -620,11 +625,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(200)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(250)");
 
                 entity.Property(e => e.ViaNo)
                     .HasColumnName("via_no")
@@ -672,6 +672,11 @@ password=vijay@123;database=empezar");
                     .HasColumnName("depot_name")
                     .HasColumnType("varchar(150)");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.ModifiedBy)
                     .HasColumnName("modified_by")
                     .HasColumnType("int(11)");
@@ -697,11 +702,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(200)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(250)");
 
                 entity.Property(e => e.ViaNo)
                     .HasColumnName("via_no")
@@ -767,6 +767,11 @@ password=vijay@123;database=empezar");
                     .HasColumnName("disposal_mode")
                     .HasColumnType("varchar(500)");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.ImdgClass)
                     .HasColumnName("imdg_class")
                     .HasColumnType("varchar(500)");
@@ -829,11 +834,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(100)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(150)");
 
                 entity.Property(e => e.Voyage)
                     .IsRequired()
@@ -902,6 +902,11 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.DisposalMode)
                     .HasColumnName("disposal_mode")
                     .HasColumnType("varchar(500)");
+
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
 
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
@@ -974,11 +979,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(100)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(150)");
 
                 entity.Property(e => e.Voyage)
                     .IsRequired()
@@ -1058,6 +1058,11 @@ password=vijay@123;database=empezar");
                     .HasColumnName("disposal_mode")
                     .HasColumnType("varchar(500)");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
                     .HasColumnType("int(11)");
@@ -1128,11 +1133,6 @@ password=vijay@123;database=empezar");
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(100)");
 
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(150)");
-
                 entity.Property(e => e.Voyage)
                     .IsRequired()
                     .HasColumnName("voyage")
@@ -1170,6 +1170,11 @@ password=vijay@123;database=empezar");
                     .HasColumnName("date")
                     .HasColumnType("varchar(50)");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
                     .HasColumnType("int(11)");
@@ -1201,11 +1206,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(100)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(150)");
 
                 entity.Property(e => e.ViaNo)
                     .HasColumnName("via_no")
@@ -1254,6 +1254,11 @@ password=vijay@123;database=empezar");
                     .HasColumnName("date")
                     .HasColumnType("varchar(50)");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
                     .HasColumnType("int(11)");
@@ -1283,11 +1288,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(100)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(150)");
 
                 entity.Property(e => e.ViaNo)
                     .HasColumnName("via_no")

@@ -93,10 +93,16 @@ namespace Enbloc
                     baseObject.Success = false;
                     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
                     baseObject.Data = obj;
-                }
-                else
+                }                
+                else if(new EmailService.MailService().getEmailCountByEmailId(email.From) > 5)
                 {
-                    success = true;
+                    obj.Add("errors", "Email exceeded daily limit.");
+                    baseObject.Success = false;
+                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
+                    baseObject.Data = obj;
+                }else
+                {
+                    baseObject.Success = true;
                 }
             }
             catch (Exception ex)

@@ -85,13 +85,13 @@ namespace Enbloc
             {
                 var lstEnblocSnapshot = (List<EmptyEnblocSnapshot>)baselstEnblocSnapshot;
                 var enblocFromSnapshot = lstEnblocSnapshot.First();
-                string vesselno = enblocFromSnapshot.Vessel.Replace(" ", "") + enblocFromSnapshot.ViaNo.ToString();
+                string enblocno = enblocFromSnapshot.Vessel.Replace(" ", "") + enblocFromSnapshot.ViaNo.ToString();
 
                 EmptyEnbloc objEnbloc = new EmptyEnbloc()
                 {
                     Vessel = enblocFromSnapshot.Vessel,
                     Voyage = "",
-                    VesselNo = vesselno,
+                    EnblocNumber = enblocno,
                     ViaNo = enblocFromSnapshot.ViaNo,
                     TransactionId = enblocFromSnapshot.TransactionId,
                     CreatedBy = 0
@@ -108,7 +108,7 @@ namespace Enbloc
                         Vessel = enblocContainer.Vessel,
                         Voyage = "",
                         //ViaNo = enblocContainer.ViaNo,
-                        VesselNo = vesselno,
+                        EnblocNumber = enblocno,
                         ContainerNo = enblocContainer.ContainerNo,
                         ContainerSize = Convert.ToInt16(enblocContainer.ContainerSize),
                         ContainerType = enblocContainer.ContainerType,
@@ -134,8 +134,8 @@ namespace Enbloc
 
         protected override bool IsVesselVoyageExists(string vessel, string voyage)
         {
-            string vesselno = vessel.Replace(" ", "") + voyage;
-            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.VesselNo == vesselno && x.Status != Status.COMPLETED);
+            string enblocno = vessel.Replace(" ", "") + voyage;
+            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.EnblocNumber == enblocno && x.Status != Status.COMPLETED);
         }
 
 
