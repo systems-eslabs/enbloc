@@ -26,7 +26,6 @@ namespace Enbloc.Entities
         {
             RuleFor(enbloc => enbloc.Vessel).NotEmpty().WithMessage("Vessel field can not be empty");
             RuleFor(enbloc => enbloc.ViaNo).NotEmpty().WithMessage("Via No. field can not be empty");
-            RuleFor(enbloc => enbloc.Voyage).NotEmpty().WithMessage("ISO field can not be empty");
             RuleFor(enbloc => enbloc.ContainerNo).Length(11).WithMessage("Container Number field should be 11 digit");
             RuleFor(enbloc => enbloc.ContainerNo).Must(IsChecksumMatched).WithMessage("Container Number does not match ISO 6346 Standards");
 
