@@ -10,9 +10,9 @@ namespace Enbloc.DbEntities
         public string Description { get; set; }
         public string Scope { get; set; }
         public sbyte IsActive { get; set; }
-        public DateTime CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime? ModifiedBy { get; set; }
-        public DateTime? ArchivedDate { get; set; }
+        public int? ModifiedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }

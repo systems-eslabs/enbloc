@@ -135,7 +135,7 @@ namespace Enbloc
         public override bool IsVesselVoyageExists(string vessel, string voyage)
         {
             string vesselno = vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim()) + voyage;
-            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.VesselNo == vesselno);
+            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.VesselNo == vesselno && x.Status != Status.COMPLETED);
         }
 
 

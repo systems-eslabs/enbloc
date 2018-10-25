@@ -7,6 +7,7 @@ namespace Enbloc.DbEntities
     {
         public long Id { get; set; }
         public long TransactionId { get; set; }
+        public string Status { get; set; }
         public string Vessel { get; set; }
         public string Voyage { get; set; }
         public string VesselNo { get; set; }
