@@ -7,9 +7,11 @@ namespace Enbloc.DbEntities
     {
         public long Id { get; set; }
         public string TransactionId { get; set; }
+        public int Status { get; set; }
         public string Vessel { get; set; }
         public string Voyage { get; set; }
         public string VesselNo { get; set; }
+        public string ViaNo { get; set; }
         public string ContainerNo { get; set; }
         public int ContainerSize { get; set; }
         public string ContainerType { get; set; }
@@ -20,5 +22,7 @@ namespace Enbloc.DbEntities
         public DateTime? ModifiedDate { get; set; }
         public int? HistoryBy { get; set; }
         public DateTime HistoryDate { get; set; }
+
+        public MasterStatus StatusNavigation { get; set; }
     }
 }
