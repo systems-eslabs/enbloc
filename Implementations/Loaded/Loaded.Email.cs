@@ -63,7 +63,6 @@ namespace Enbloc
                 }
 
                 var attachments = email.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX)).ToList();
-
                 if (!attachments.Any())
                 {
                     baseObject.Success = false;
@@ -96,7 +95,6 @@ namespace Enbloc
             {
                 baseObject.Success = false;
                 baseObject.Code = (int)EnumTemplateCode.ErrorOccured;
-                baseObject.Data = obj;
             }
             return baseObject;
         }

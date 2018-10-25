@@ -35,12 +35,12 @@ namespace Enbloc
 
             if (baseObject.Success)
             {
-                baseObject = ValidateEnbloc(lstEnblocSnapshot);
+                baseObject = ValidateEnbloc(email, lstEnblocSnapshot);
             }
 
             if (baseObject.Success)
             {
-                baseObject = SaveEnblocToDB(lstEnblocSnapshot);
+                baseObject = SaveEnblocToDB(email, lstEnblocSnapshot);
             }
             return baseObject;
         }
@@ -49,31 +49,21 @@ namespace Enbloc
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
-            baseObject.Success = true;
+            obj.Add("transactionNo", Convert.ToString(email.TransactionId));
 
             try
             {
                 if (!email.Attachments.Any())
                 {
                     baseObject.Success = false;
-                    obj.Add("errors", "No attachments found.");
-                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
-                    baseObject.Data = obj;
-                    return baseObject;
-                }
-
-                var attachments = email.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX)).ToList();
-
-                if (!attachments.Any())
-                {
-                    baseObject.Success = false;
-                    obj.Add("errors", "Email should contain exactly one excel attachment.");
+                    obj.Add("errors", "No attachment(s) found.");
                     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
                     baseObject.Data = obj;
                     return baseObject;
                 }
 
-                if (attachments.Count > 1)
+                var attachments = email.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX)).ToList();
+                if (attachments.Count != 1)
                 {
                     baseObject.Success = false;
                     obj.Add("errors", "Email should contain exactly one excel attachment.");
@@ -106,11 +96,12 @@ namespace Enbloc
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
+            obj.Add("transactionNo", Convert.ToString(email.TransactionId));
+
             try
             {
                 FileInfo file = new FileInfo(email.Attachments.First().localUrl);
                 ProcessEnbloc(file, "EM", email.TransactionId, lstEnblocSnapshot);
-
                 baseObject.Success = true;
             }
             catch (Exception ex)
@@ -156,15 +147,15 @@ namespace Enbloc
             //return lstEnblocSnapshot;
         }
 
-        private static BaseReturn<Dictionary<string, string>> ValidateEnbloc(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
+        private static BaseReturn<Dictionary<string, string>> ValidateEnbloc(Email email, List<EmptyEnblocSnapshot> lstEnblocSnapshot)
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
+            obj.Add("transactionNo", Convert.ToString(email.TransactionId));
+
             try
             {
                 EmptyEnblocValidatorCollectionValidator validator = new EmptyEnblocValidatorCollectionValidator();
-
-                obj.Add("transactionNo", Convert.ToString(lstEnblocSnapshot.First().TransactionId));
                 if (lstEnblocSnapshot.Count > 1000)
                 {
                     obj.Add("errors", "Maximum 1000 rows are allowed in the Excel Attachment.");
@@ -174,25 +165,24 @@ namespace Enbloc
                     return baseObject;
                 }
 
-                // if vessel voyage no already exists and enbloc in progress then no processing 
-
-                if (IsVesselVoyageExists(lstEnblocSnapshot.First().Vessel, ""))
-                {
-                    obj.Add("0", "Vessel Voyage already exists");
-                    baseObject.Success = false;
-                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
-                    baseObject.Data = obj;
-                    return baseObject;
-                }
+                // // if vessel voyage no already exists and enbloc in progress then no processing 
+                // if (IsVesselVoyageExists(lstEnblocSnapshot.First().Vessel, ""))
+                // {
+                //     obj.Add("0", "Vessel Voyage already exists");
+                //     baseObject.Success = false;
+                //     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
+                //     baseObject.Data = obj;
+                //     return baseObject;
+                // }
 
                 ValidationResult results = validator.Validate(lstEnblocSnapshot);
                 if (!results.IsValid)
                 {
                     int selectIndex = 0;
-                    results.Errors.Select(x => x.ErrorMessage).Distinct().ToList().ForEach(error =>
-                    {
-                        obj.Add(Convert.ToString(selectIndex++), error);
-                    });
+                    results.Errors.Select(result => result.ErrorMessage + ", For value '" + result.AttemptedValue + "'").Distinct().ToList().ForEach(error =>
+                     {
+                         obj.Add(Convert.ToString(selectIndex++), error);
+                     });
                     baseObject.Success = false;
                     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
                     baseObject.Data = obj;
@@ -210,15 +200,16 @@ namespace Enbloc
             return baseObject;
         }
 
-        private static BaseReturn<Dictionary<string, string>> SaveEnblocToDB(List<EmptyEnblocSnapshot> lstEnblocSnapshot)
+        private static BaseReturn<Dictionary<string, string>> SaveEnblocToDB(Email email, List<EmptyEnblocSnapshot> lstEnblocSnapshot)
         {
-
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
+            obj.Add("transactionNo", Convert.ToString(email.TransactionId));
+
             try
             {
                 var enblocFromSnapshot = lstEnblocSnapshot.First();
-                string vesselno = enblocFromSnapshot.Vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim());// + enblocFromSnapshot.Voyage.ToString();
+                string vesselno = enblocFromSnapshot.Vessel.Replace(" ", "") + enblocFromSnapshot.ViaNo.ToString();
 
                 EmptyEnbloc objEnbloc = new EmptyEnbloc()
                 {
@@ -229,9 +220,8 @@ namespace Enbloc
                     TransactionId = enblocFromSnapshot.TransactionId,
                     CreatedBy = 0
                 };
-
+                 //Save to DB
                 new EmpezarRepository<EmptyEnbloc>().Add(objEnbloc);
-
 
                 List<EmptyEnblocContainers> lstEmptyEnblocContainers = new List<EmptyEnblocContainers>();
                 lstEnblocSnapshot.ForEach(enblocContainer =>
@@ -241,6 +231,7 @@ namespace Enbloc
                         TransactionId = enblocContainer.TransactionId,
                         Vessel = enblocContainer.Vessel,
                         Voyage = "",
+                        ViaNo = enblocContainer.ViaNo,
                         VesselNo = vesselno,
                         ContainerNo = enblocContainer.ContainerNo,
                         ContainerSize = Convert.ToInt16(enblocContainer.ContainerSize),
@@ -249,7 +240,7 @@ namespace Enbloc
                         CreatedBy = 0
                     });
                 });
-
+                //Save to DB
                 new EmpezarRepository<EmptyEnblocContainers>().AddRange(lstEmptyEnblocContainers);
 
 
