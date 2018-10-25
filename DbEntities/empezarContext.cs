@@ -15,6 +15,13 @@ namespace Enbloc.DbEntities
         {
         }
 
+        public virtual DbSet<EmptyEnbloc> EmptyEnbloc { get; set; }
+        public virtual DbSet<EmptyEnblocArchive> EmptyEnblocArchive { get; set; }
+        public virtual DbSet<EmptyEnblocContainers> EmptyEnblocContainers { get; set; }
+        public virtual DbSet<EmptyEnblocContainersHistory> EmptyEnblocContainersHistory { get; set; }
+        public virtual DbSet<EmptyEnblocContainersHistoryArchive> EmptyEnblocContainersHistoryArchive { get; set; }
+        public virtual DbSet<EmptyEnblocHistory> EmptyEnblocHistory { get; set; }
+        public virtual DbSet<EmptyEnblocHistoryArchive> EmptyEnblocHistoryArchive { get; set; }
         public virtual DbSet<LoadedEnbloc> LoadedEnbloc { get; set; }
         public virtual DbSet<LoadedEnblocArchive> LoadedEnblocArchive { get; set; }
         public virtual DbSet<LoadedEnblocContainers> LoadedEnblocContainers { get; set; }
@@ -36,6 +43,458 @@ password=vijay@123;database=empezar");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<EmptyEnbloc>(entity =>
+            {
+                entity.ToTable("empty_enbloc");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasColumnName("created_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("created_date")
+                    .HasColumnType("timestamp")
+                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasColumnName("modified_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnName("modified_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.TransactionId)
+                    .IsRequired()
+                    .HasColumnName("transaction_id")
+                    .HasColumnType("varchar(25)");
+
+                entity.Property(e => e.Vessel)
+                    .IsRequired()
+                    .HasColumnName("vessel")
+                    .HasColumnType("varchar(200)");
+
+                entity.Property(e => e.VesselNo)
+                    .IsRequired()
+                    .HasColumnName("vessel_no")
+                    .HasColumnType("varchar(250)");
+
+                entity.Property(e => e.ViaNo)
+                    .HasColumnName("via_no")
+                    .HasColumnType("varchar(10)");
+
+                entity.Property(e => e.Voyage)
+                    .IsRequired()
+                    .HasColumnName("voyage")
+                    .HasColumnType("varchar(10)");
+            });
+
+            modelBuilder.Entity<EmptyEnblocArchive>(entity =>
+            {
+                entity.ToTable("empty_enbloc_archive");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.ArchivedBy)
+                    .HasColumnName("archived_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ArchivedDate)
+                    .HasColumnName("archived_date")
+                    .HasColumnType("timestamp")
+                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasColumnName("created_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("created_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasColumnName("modified_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnName("modified_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.TransactionId)
+                    .IsRequired()
+                    .HasColumnName("transaction_id")
+                    .HasColumnType("varchar(25)");
+
+                entity.Property(e => e.Vessel)
+                    .IsRequired()
+                    .HasColumnName("vessel")
+                    .HasColumnType("varchar(200)");
+
+                entity.Property(e => e.VesselNo)
+                    .IsRequired()
+                    .HasColumnName("vessel_no")
+                    .HasColumnType("varchar(250)");
+
+                entity.Property(e => e.ViaNo)
+                    .HasColumnName("via_no")
+                    .HasColumnType("varchar(10)");
+
+                entity.Property(e => e.Voyage)
+                    .IsRequired()
+                    .HasColumnName("voyage")
+                    .HasColumnType("varchar(10)");
+            });
+
+            modelBuilder.Entity<EmptyEnblocContainers>(entity =>
+            {
+                entity.ToTable("empty_enbloc_containers");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.ContainerNo)
+                    .IsRequired()
+                    .HasColumnName("container_no")
+                    .HasColumnType("varchar(20)");
+
+                entity.Property(e => e.ContainerSize)
+                    .HasColumnName("container_size")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ContainerType)
+                    .IsRequired()
+                    .HasColumnName("container_type")
+                    .HasColumnType("varchar(8)");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasColumnName("created_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("created_date")
+                    .HasColumnType("timestamp")
+                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
+
+                entity.Property(e => e.IsoCode)
+                    .HasColumnName("iso_code")
+                    .HasColumnType("varchar(500)");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasColumnName("modified_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnName("modified_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.TransactionId)
+                    .IsRequired()
+                    .HasColumnName("transaction_id")
+                    .HasColumnType("varchar(25)");
+
+                entity.Property(e => e.Vessel)
+                    .IsRequired()
+                    .HasColumnName("vessel")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.VesselNo)
+                    .IsRequired()
+                    .HasColumnName("vessel_no")
+                    .HasColumnType("varchar(150)");
+
+                entity.Property(e => e.Voyage)
+                    .IsRequired()
+                    .HasColumnName("voyage")
+                    .HasColumnType("varchar(50)");
+            });
+
+            modelBuilder.Entity<EmptyEnblocContainersHistory>(entity =>
+            {
+                entity.ToTable("empty_enbloc_containers_history");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.ContainerNo)
+                    .IsRequired()
+                    .HasColumnName("container_no")
+                    .HasColumnType("varchar(20)");
+
+                entity.Property(e => e.ContainerSize)
+                    .HasColumnName("container_size")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ContainerType)
+                    .IsRequired()
+                    .HasColumnName("container_type")
+                    .HasColumnType("varchar(8)");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasColumnName("created_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("created_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.HistoryBy)
+                    .HasColumnName("history_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.HistoryDate)
+                    .HasColumnName("history_date")
+                    .HasColumnType("timestamp")
+                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'")
+                    .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.IsoCode)
+                    .HasColumnName("iso_code")
+                    .HasColumnType("varchar(500)");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasColumnName("modified_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnName("modified_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.TransactionId)
+                    .IsRequired()
+                    .HasColumnName("transaction_id")
+                    .HasColumnType("varchar(25)");
+
+                entity.Property(e => e.Vessel)
+                    .IsRequired()
+                    .HasColumnName("vessel")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.VesselNo)
+                    .IsRequired()
+                    .HasColumnName("vessel_no")
+                    .HasColumnType("varchar(150)");
+
+                entity.Property(e => e.Voyage)
+                    .IsRequired()
+                    .HasColumnName("voyage")
+                    .HasColumnType("varchar(50)");
+            });
+
+            modelBuilder.Entity<EmptyEnblocContainersHistoryArchive>(entity =>
+            {
+                entity.ToTable("empty_enbloc_containers_history_archive");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.ArchivedBy)
+                    .HasColumnName("archived_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ArchivedDate)
+                    .HasColumnName("archived_date")
+                    .HasColumnType("timestamp")
+                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'")
+                    .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.ContainerNo)
+                    .IsRequired()
+                    .HasColumnName("container_no")
+                    .HasColumnType("varchar(20)");
+
+                entity.Property(e => e.ContainerSize)
+                    .HasColumnName("container_size")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ContainerType)
+                    .IsRequired()
+                    .HasColumnName("container_type")
+                    .HasColumnType("varchar(8)");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasColumnName("created_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("created_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.HistoryBy)
+                    .HasColumnName("history_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.HistoryDate)
+                    .HasColumnName("history_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.IsoCode)
+                    .HasColumnName("iso_code")
+                    .HasColumnType("varchar(500)");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasColumnName("modified_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnName("modified_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.TransactionId)
+                    .IsRequired()
+                    .HasColumnName("transaction_id")
+                    .HasColumnType("varchar(25)");
+
+                entity.Property(e => e.Vessel)
+                    .IsRequired()
+                    .HasColumnName("vessel")
+                    .HasColumnType("varchar(100)");
+
+                entity.Property(e => e.VesselNo)
+                    .IsRequired()
+                    .HasColumnName("vessel_no")
+                    .HasColumnType("varchar(150)");
+
+                entity.Property(e => e.Voyage)
+                    .IsRequired()
+                    .HasColumnName("voyage")
+                    .HasColumnType("varchar(50)");
+            });
+
+            modelBuilder.Entity<EmptyEnblocHistory>(entity =>
+            {
+                entity.ToTable("empty_enbloc_history");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasColumnName("created_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("created_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.HistoryBy)
+                    .HasColumnName("history_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.HistoryDate)
+                    .HasColumnName("history_date")
+                    .HasColumnType("timestamp")
+                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'")
+                    .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasColumnName("modified_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnName("modified_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.TransactionId)
+                    .IsRequired()
+                    .HasColumnName("transaction_id")
+                    .HasColumnType("varchar(25)");
+
+                entity.Property(e => e.Vessel)
+                    .IsRequired()
+                    .HasColumnName("vessel")
+                    .HasColumnType("varchar(200)");
+
+                entity.Property(e => e.VesselNo)
+                    .IsRequired()
+                    .HasColumnName("vessel_no")
+                    .HasColumnType("varchar(250)");
+
+                entity.Property(e => e.ViaNo)
+                    .HasColumnName("via_no")
+                    .HasColumnType("varchar(10)");
+
+                entity.Property(e => e.Voyage)
+                    .IsRequired()
+                    .HasColumnName("voyage")
+                    .HasColumnType("varchar(10)");
+            });
+
+            modelBuilder.Entity<EmptyEnblocHistoryArchive>(entity =>
+            {
+                entity.ToTable("empty_enbloc_history_archive");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.ArchivedBy)
+                    .HasColumnName("archived_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ArchivedDate)
+                    .HasColumnName("archived_date")
+                    .HasColumnType("timestamp")
+                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'")
+                    .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.CreatedBy)
+                    .HasColumnName("created_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("created_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.HistoryBy)
+                    .HasColumnName("history_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.HistoryDate)
+                    .HasColumnName("history_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasColumnName("modified_by")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnName("modified_date")
+                    .HasColumnType("timestamp");
+
+                entity.Property(e => e.TransactionId)
+                    .IsRequired()
+                    .HasColumnName("transaction_id")
+                    .HasColumnType("varchar(25)");
+
+                entity.Property(e => e.Vessel)
+                    .IsRequired()
+                    .HasColumnName("vessel")
+                    .HasColumnType("varchar(200)");
+
+                entity.Property(e => e.VesselNo)
+                    .IsRequired()
+                    .HasColumnName("vessel_no")
+                    .HasColumnType("varchar(250)");
+
+                entity.Property(e => e.ViaNo)
+                    .HasColumnName("via_no")
+                    .HasColumnType("varchar(10)");
+
+                entity.Property(e => e.Voyage)
+                    .IsRequired()
+                    .HasColumnName("voyage")
+                    .HasColumnType("varchar(10)");
+            });
+
             modelBuilder.Entity<LoadedEnbloc>(entity =>
             {
                 entity.ToTable("loaded_enbloc");

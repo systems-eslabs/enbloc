@@ -8,6 +8,7 @@ using System.Linq;
 using FluentValidation.Results;
 using System.Text;
 using Enbloc.Entities;
+using System.Net.Mail;
 
 namespace Enbloc
 {
@@ -48,7 +49,8 @@ namespace Enbloc
                                 default:
                                     Dictionary<string, string> obj = new Dictionary<string, string>();
                                     obj.Add("transactionNo", Convert.ToString(email.TransactionId));
-                                    baseObject.Code = (int)EnumTemplateCode.InvalidEmailSubject;
+                                    obj.Add("errors", "Email Subject is not recognized.");
+                                    baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
                                     baseObject.Data = obj;
                                     break;
                             }
@@ -74,10 +76,30 @@ namespace Enbloc
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
 
+            MailAddress address = new MailAddress(email.From);
+
+
+            if (Config.enblocwhitelistDomains.Split(",").Any(id => id == address.Host))
+            {
+                obj.Add("errors", "Email Domain Not Listed With Empezar.");
+
+                baseObject.Success = false;
+                baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
+                baseObject.Data = obj;
+            }
+            if (Config.enblocwhitelistEmailIds.Split(",").Any(id => id == email.From.ToLower()))
+            {
+                obj.Add("errors", "Email Id Not Listed With Empezar.");
+                baseObject.Success = false;
+                baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
+                baseObject.Data = obj;
+            }
+
+
             //EmailNotWhiteListed,
             //MaxEmailLimitReached,
 
-            //ReplyToEmail(email, baseObject);
+            ReplyToEmail(email, baseObject);
             success = true;
             return success;
         }
@@ -108,30 +130,22 @@ namespace Enbloc
                         obj.Add("[{{" + x.Key + "}}]", x.Value);
                     });
             baseObject.Data = obj;
+
+            string errors = "";
             switch ((EnumTemplateCode)baseObject.Code)
             {
                 case EnumTemplateCode.ErrorOccured:
                     template = "enbloc/Templates/ErrorOccured.html";
                     break;
-                case EnumTemplateCode.EmailIdNotListed:
-                    template = "enbloc/Templates/EmailIdNotListed.html";
-                    break;
-                case EnumTemplateCode.MaxEmailLimitReached:
-                    template = "enbloc/Templates/MaxEmailLimitReached.html";
-                    break;
-                case EnumTemplateCode.InvalidEmailSubject:
-                    template = "enbloc/Templates/InvalidEmailSubject.html";
-                    break;
-                case EnumTemplateCode.NoExcelAttachment:
-                    template = "enbloc/Templates/NoAttachment.html";
-                    break;
-                case EnumTemplateCode.ExcelNoRowsLimitReached:
-                    template = "enbloc/Templates/ExcelNoRowsLimitReached.html";
-                    break;
-                case EnumTemplateCode.InvalidExcelFormat:
-                    string errors = "<li>" + baseObject.Data.Where(x => x.Key != "[{{transactionNo}}]").Select(x => x.Value).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
+                case EnumTemplateCode.ErrorOccuredExcel:
+                    errors = "<li>" + baseObject.Data.Where(x => x.Key != "[{{transactionNo}}]").Select(x => x.Value).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
                     baseObject.Data.Add("[{{errors}}]", errors);
-                    template = "enbloc/Templates/InvalidExcelFormat.html";
+                    template = "enbloc/Templates/ErrorOccuredExcel.html";
+                    break;
+                case EnumTemplateCode.ErrorOccuredEmail:
+                    errors = "<li>" + baseObject.Data.Where(x => x.Key != "[{{transactionNo}}]").Select(x => x.Value).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
+                    baseObject.Data.Add("[{{errors}}]", errors);
+                    template = "enbloc/Templates/ErrorOccuredEmail.html";
                     break;
                 case EnumTemplateCode.EmailProcessed:
                     template = "enbloc/Templates/EmailProcessed.html";
