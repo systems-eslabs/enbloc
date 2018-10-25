@@ -41,7 +41,7 @@ namespace Enbloc
             return base.ValidateEnbloc(email, lstEnblocSnapshot);
         }
 
-        public override void ProcessEnbloc<T>(FileInfo file, string programCode, int transactionId, IEnumerable<T> baselstEnblocSnapshot)
+        protected override void ProcessEnbloc<T>(FileInfo file, string programCode, int transactionId, IEnumerable<T> baselstEnblocSnapshot)
         {
             var lstEnblocSnapshot = (List<LoadedEnblocSnapshot>)baselstEnblocSnapshot;
             using (ExcelPackage package = new ExcelPackage(file))
@@ -98,7 +98,7 @@ namespace Enbloc
             //return lstEnblocSnapshot;
         }
 
-        public override BaseReturn<Dictionary<string, string>> SaveEnblocToDB<T>(Email email, IEnumerable<T> baselstEnblocSnapshot)
+        protected override BaseReturn<Dictionary<string, string>> SaveEnblocToDB<T>(Email email, IEnumerable<T> baselstEnblocSnapshot)
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
@@ -173,13 +173,13 @@ namespace Enbloc
             return baseObject;
         }
 
-        public override bool IsVesselVoyageExists(string vessel, string voyage)
+        protected override bool IsVesselVoyageExists(string vessel, string voyage)
         {
-            string vesselno = vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim()) + voyage;
-            return new EmpezarRepository<LoadedEnbloc>().IsExists(x => x.VesselNo == vesselno);
+            string vesselno = vessel.Replace(" ", "") + voyage;
+            return new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.VesselNo == vesselno && x.Status != Status.COMPLETED);
         }
 
-        public override ValidationResult ValidateEnblocData<T>(IEnumerable<T> lstEnblocSnapshot)
+        protected override ValidationResult ValidateEnblocData<T>(IEnumerable<T> lstEnblocSnapshot)
         {
             LoadedEnblocValidatorCollectionValidator validator = new LoadedEnblocValidatorCollectionValidator();
             ValidationResult results = validator.Validate((List<LoadedEnblocSnapshot>)lstEnblocSnapshot);

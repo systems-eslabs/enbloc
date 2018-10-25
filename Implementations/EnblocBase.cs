@@ -16,13 +16,13 @@ namespace Enbloc
     {
         Mail mailService = null;
 
-        public EnblocBase(Mail mailService)
+        protected EnblocBase(Mail mailService)
         {
             this.mailService = mailService;
         }
 
 
-        public BaseReturn<Dictionary<string, string>> processEmail<T>(Email email)
+        protected BaseReturn<Dictionary<string, string>> processEmail<T>(Email email)
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             List<T> lstEnblocSnapshot = new List<T>();
@@ -94,7 +94,7 @@ namespace Enbloc
         }
 
 
-        public BaseReturn<Dictionary<string, string>> ProcessEmailAttachments<T>(Email email, List<T> lstEnblocSnapshot)
+        protected BaseReturn<Dictionary<string, string>> ProcessEmailAttachments<T>(Email email, List<T> lstEnblocSnapshot)
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
@@ -116,7 +116,7 @@ namespace Enbloc
         }
 
 
-        public BaseReturn<Dictionary<string, string>> ValidateEnbloc<T>(Email email, List<T> lstEnblocSnapshot)
+        protected BaseReturn<Dictionary<string, string>> ValidateEnbloc<T>(Email email, List<T> lstEnblocSnapshot)
         {
             BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
             Dictionary<string, string> obj = new Dictionary<string, string>();
@@ -169,17 +169,17 @@ namespace Enbloc
         }
 
 
-        public abstract void ProcessEnbloc<T>(FileInfo file, string programCode, int transactionId, IEnumerable<T> lstEnblocSnapshot);
+        protected abstract void ProcessEnbloc<T>(FileInfo file, string programCode, int transactionId, IEnumerable<T> lstEnblocSnapshot);
 
 
-        public abstract BaseReturn<Dictionary<string, string>> SaveEnblocToDB<T>(Email email, IEnumerable<T> lstEnblocSnapshot);
+        protected abstract BaseReturn<Dictionary<string, string>> SaveEnblocToDB<T>(Email email, IEnumerable<T> lstEnblocSnapshot);
 
 
-        public abstract bool IsVesselVoyageExists(string vessel, string voyage);
+        protected abstract bool IsVesselVoyageExists(string vessel, string voyage);
 
-        public abstract ValidationResult ValidateEnblocData<T>(IEnumerable<T> lstEnblocSnapshot);
+        protected abstract ValidationResult ValidateEnblocData<T>(IEnumerable<T> lstEnblocSnapshot);
 
-        public static int GetColumnIndexByName(ExcelWorksheet ws, string columnName)
+        protected static int GetColumnIndexByName(ExcelWorksheet ws, string columnName)
         {
             return ws.Cells["1:1"].First(c => c.Value.ToString() == columnName).Start.Column;
         }
