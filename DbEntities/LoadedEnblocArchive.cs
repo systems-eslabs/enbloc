@@ -14,14 +14,12 @@ namespace Enbloc.DbEntities
         public string PermissionDate { get; set; }
         public string DepotName { get; set; }
         public long TransactionId { get; set; }
-        public int Status { get; set; }
+        public string Status { get; set; }
         public int CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public int ArchivedBy { get; set; }
         public DateTime ArchivedDate { get; set; }
-
-        public MasterStatus StatusNavigation { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace Enbloc.DbEntities
         public string VesselNo { get; set; }
         public string ViaNo { get; set; }
         public string TransactionId { get; set; }
-        public int Status { get; set; }
+        public string Status { get; set; }
         public int CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? ModifiedBy { get; set; }
@@ -20,7 +20,5 @@ namespace Enbloc.DbEntities
         public DateTime? HistoryDate { get; set; }
         public int? ArchivedBy { get; set; }
         public DateTime ArchivedDate { get; set; }
-
-        public MasterStatus StatusNavigation { get; set; }
     }
 }

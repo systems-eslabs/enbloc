@@ -72,8 +72,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .IsRequired()
@@ -98,12 +99,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(10)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.EmptyEnbloc)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_empty_enbloc_status");
             });
 
             modelBuilder.Entity<EmptyEnblocArchive>(entity =>
@@ -143,8 +138,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .IsRequired()
@@ -169,12 +165,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(10)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.EmptyEnblocArchive)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_empty_enbloc_archive_status");
             });
 
             modelBuilder.Entity<EmptyEnblocContainers>(entity =>
@@ -224,8 +214,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .IsRequired()
@@ -251,12 +242,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(50)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.EmptyEnblocContainers)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_empty_enbloc_containers_status");
             });
 
             modelBuilder.Entity<EmptyEnblocContainersHistory>(entity =>
@@ -315,8 +300,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .IsRequired()
@@ -342,12 +328,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(50)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.EmptyEnblocContainersHistory)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_empty_enbloc_containers_history_status");
             });
 
             modelBuilder.Entity<EmptyEnblocContainersHistoryArchive>(entity =>
@@ -414,8 +394,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .IsRequired()
@@ -441,12 +422,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(50)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.EmptyEnblocContainersHistoryArchive)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_empty_enbloc_containers_history_archive_status");
             });
 
             modelBuilder.Entity<EmptyEnblocHistory>(entity =>
@@ -487,8 +462,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .IsRequired()
@@ -513,12 +489,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(10)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.EmptyEnblocHistory)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_empty_enbloc_history_status");
             });
 
             modelBuilder.Entity<EmptyEnblocHistoryArchive>(entity =>
@@ -567,8 +537,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .IsRequired()
@@ -593,12 +564,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(10)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.EmptyEnblocHistoryArchive)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_empty_enbloc_history_archive_status");
             });
 
             modelBuilder.Entity<LoadedEnbloc>(entity =>
@@ -642,8 +607,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .IsRequired()
@@ -668,12 +634,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(10)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.LoadedEnbloc)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_loaded_enbloc_status");
             });
 
             modelBuilder.Entity<LoadedEnblocArchive>(entity =>
@@ -725,8 +685,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .HasColumnName("transaction_id")
@@ -750,12 +711,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(10)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.LoadedEnblocArchive)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_loaded_enbloc_archive_status");
             });
 
             modelBuilder.Entity<LoadedEnblocContainers>(entity =>
@@ -861,8 +816,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(500)");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .IsRequired()
@@ -887,12 +843,6 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.Wt)
                     .HasColumnName("wt")
                     .HasColumnType("varchar(500)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.LoadedEnblocContainers)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_loaded_enbloc_containers_status");
             });
 
             modelBuilder.Entity<LoadedEnblocContainersHistory>(entity =>
@@ -1012,8 +962,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(500)");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .HasColumnName("transaction_id")
@@ -1037,12 +988,6 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.Wt)
                     .HasColumnName("wt")
                     .HasColumnType("varchar(500)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.LoadedEnblocContainersHistory)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_loaded_enbloc_containers_history_status");
             });
 
             modelBuilder.Entity<LoadedEnblocContainersHistoryArchive>(entity =>
@@ -1170,8 +1115,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("varchar(500)");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .HasColumnName("transaction_id")
@@ -1195,12 +1141,6 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.Wt)
                     .HasColumnName("wt")
                     .HasColumnType("varchar(500)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.LoadedEnblocContainersHistoryArchive)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_loaded_enbloc_containers_history_archive_status");
             });
 
             modelBuilder.Entity<LoadedEnblocHistory>(entity =>
@@ -1249,8 +1189,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .HasColumnName("transaction_id")
@@ -1274,12 +1215,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(50)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.LoadedEnblocHistory)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_loaded_enbloc_history_status");
             });
 
             modelBuilder.Entity<LoadedEnblocHistoryArchive>(entity =>
@@ -1336,8 +1271,9 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp");
 
                 entity.Property(e => e.Status)
+                    .IsRequired()
                     .HasColumnName("status")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.TransactionId)
                     .HasColumnName("transaction_id")
@@ -1361,17 +1297,14 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("voyage")
                     .HasColumnType("varchar(50)");
-
-                entity.HasOne(d => d.StatusNavigation)
-                    .WithMany(p => p.LoadedEnblocHistoryArchive)
-                    .HasForeignKey(d => d.Status)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_loaded_enbloc_history_archive_status");
             });
 
             modelBuilder.Entity<MasterStatus>(entity =>
             {
                 entity.ToTable("master_status");
+
+                entity.HasIndex(e => e.Code)
+                    .HasName("INDEX");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
