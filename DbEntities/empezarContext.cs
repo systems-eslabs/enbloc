@@ -63,6 +63,11 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp")
                     .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.ModifiedBy)
                     .HasColumnName("modified_by")
                     .HasColumnType("int(11)");
@@ -85,11 +90,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(200)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(250)");
 
                 entity.Property(e => e.ViaNo)
                     .HasColumnName("via_no")
@@ -129,6 +129,11 @@ password=vijay@123;database=empezar");
                     .HasColumnName("created_date")
                     .HasColumnType("timestamp");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.ModifiedBy)
                     .HasColumnName("modified_by")
                     .HasColumnType("int(11)");
@@ -151,11 +156,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(200)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(250)");
 
                 entity.Property(e => e.ViaNo)
                     .HasColumnName("via_no")
@@ -201,6 +201,11 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp")
                     .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.IsoCode)
                     .HasColumnName("iso_code")
                     .HasColumnType("varchar(500)");
@@ -227,11 +232,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(100)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(150)");
 
                 entity.Property(e => e.ViaNo)
                     .IsRequired()
@@ -277,6 +277,11 @@ password=vijay@123;database=empezar");
                     .HasColumnName("created_date")
                     .HasColumnType("timestamp");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
                     .HasColumnType("int(11)");
@@ -313,11 +318,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(100)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(150)");
 
                 entity.Property(e => e.ViaNo)
                     .IsRequired()
@@ -373,6 +373,11 @@ password=vijay@123;database=empezar");
                     .HasColumnName("created_date")
                     .HasColumnType("timestamp");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
                     .HasColumnType("int(11)");
@@ -408,11 +413,6 @@ password=vijay@123;database=empezar");
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(100)");
 
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(150)");
-
                 entity.Property(e => e.ViaNo)
                     .IsRequired()
                     .HasColumnName("via_no")
@@ -442,6 +442,11 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.CreatedDate)
                     .HasColumnName("created_date")
                     .HasColumnType("timestamp");
+
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
 
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
@@ -475,11 +480,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(200)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(250)");
 
                 entity.Property(e => e.ViaNo)
                     .HasColumnName("via_no")
@@ -520,6 +520,11 @@ password=vijay@123;database=empezar");
                     .HasColumnName("created_date")
                     .HasColumnType("timestamp");
 
+                entity.Property(e => e.EnblocNumber)
+                    .IsRequired()
+                    .HasColumnName("enbloc_number")
+                    .HasColumnType("varchar(250)");
+
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
                     .HasColumnType("int(11)");
@@ -550,11 +555,6 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("vessel")
                     .HasColumnType("varchar(200)");
-
-                entity.Property(e => e.VesselNo)
-                    .IsRequired()
-                    .HasColumnName("vessel_no")
-                    .HasColumnType("varchar(250)");
 
                 entity.Property(e => e.ViaNo)
                     .HasColumnName("via_no")
