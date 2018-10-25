@@ -108,13 +108,13 @@ namespace Enbloc
             {
                 var lstEnblocSnapshot = (List<LoadedEnblocSnapshot>)baselstEnblocSnapshot;
                 var enblocFromSnapshot = lstEnblocSnapshot.First();
-                string enbloclno = enblocFromSnapshot.Vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim()) + enblocFromSnapshot.Voyage.ToString();
+                string enblocno = enblocFromSnapshot.Vessel.Split(' ').ToList().Aggregate((x, y) => x.Trim() + y.Trim()) + enblocFromSnapshot.Voyage.ToString();
 
                 LoadedEnbloc objEnbloc = new LoadedEnbloc()
                 {
                     Vessel = enblocFromSnapshot.Vessel,
                     Voyage = enblocFromSnapshot.Voyage,
-                    EnblocNumber = enbloclno,
+                    EnblocNumber = enblocno,
                     AgentName = enblocFromSnapshot.AgentName,
                     ViaNo = enblocFromSnapshot.ViaNo,
                     PermissionDate = enblocFromSnapshot.PermissionDate,
@@ -134,7 +134,7 @@ namespace Enbloc
                         TransactionId = enblocContainer.TransactionId,
                         Vessel = enblocContainer.Vessel,
                         Voyage = enblocContainer.Voyage,
-                        EnblocNumber = enbloclno,
+                        EnblocNumber = enblocno,
                         Srl = enblocContainer.Srl,
                         ContainerNo = enblocContainer.ContainerNo,
                         ContainerSize = Convert.ToInt16(enblocContainer.ContainerType.Substring(0, 2)),
