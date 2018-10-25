@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Enbloc.DbEntities;
 using FluentValidation;
+using Common;
 
 namespace Enbloc.Entities
 {
@@ -41,8 +42,18 @@ namespace Enbloc.Entities
     {
         public EmptyEnblocValidator()
         {
-            RuleFor(enbloc => enbloc.Vessel).NotEmpty().WithMessage("Vessel can't be empty");
-            RuleFor(enbloc => enbloc.ContainerNo).Length(11).WithMessage("Container Number should have length 11");
+            RuleFor(enbloc => enbloc.Vessel).NotEmpty().WithMessage("Vessel field can not be empty");
+            RuleFor(enbloc => enbloc.ViaNo).NotEmpty().WithMessage("Via No. field can not be empty");
+            RuleFor(enbloc => enbloc.Voyage).NotEmpty().WithMessage("ISO field can not be empty");
+            RuleFor(enbloc => enbloc.ContainerNo).Length(11).WithMessage("Container Number field should be 11 digit");
+            RuleFor(enbloc => enbloc.ContainerNo).Must(IsChecksumMatched).WithMessage("Container Number does not match ISO 6346 Standards");
+
+        }
+        
+        protected bool IsChecksumMatched(string containerNo)
+        {
+            var checkSum = CommonFunctions.calculateChecksum(containerNo);
+            return checkSum.IsChecksumMatched;
         }
     }
 
