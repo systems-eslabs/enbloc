@@ -64,7 +64,7 @@ namespace Enbloc
                     return baseObject;
                 }
 
-                var attachments = email.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX)).ToList();
+                var attachments = email.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX) || attachment.Filename.ToLower().EndsWith(FileType.XLS)).ToList();
                 if (attachments.Count != 1)
                 {
                     baseObject.Success = false;
