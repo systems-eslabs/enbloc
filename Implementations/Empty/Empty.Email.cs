@@ -80,6 +80,7 @@ namespace Enbloc
                     EnblocNumber = enblocno,
                     ViaNo = enblocFromSnapshot.ViaNo,
                     TransactionId = enblocFromSnapshot.TransactionId,
+                    Status = Status.PENDING,
                     CreatedBy = 0
                 };
                 //Save to DB
@@ -93,12 +94,13 @@ namespace Enbloc
                         TransactionId = enblocContainer.TransactionId,
                         Vessel = enblocContainer.Vessel,
                         Voyage = "",
-                        //ViaNo = enblocContainer.ViaNo,
+                        ViaNo = enblocContainer.ViaNo,
                         EnblocNumber = enblocno,
                         ContainerNo = enblocContainer.ContainerNo,
                         ContainerSize = Convert.ToInt16(enblocContainer.ContainerSize),
                         ContainerType = enblocContainer.ContainerType,
                         IsoCode = enblocContainer.IsoCode,
+                        Status = Status.PENDING,
                         CreatedBy = 0
                     });
                 });
