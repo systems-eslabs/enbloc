@@ -64,11 +64,11 @@ namespace Enbloc
                     return baseObject;
                 }
 
-                var attachments = email.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX) || attachment.Filename.ToLower().EndsWith(FileType.XLS)).ToList();
+                var attachments = email.Attachments.Where(attachment => attachment.Filename.ToLower().EndsWith(FileType.XLSX)).ToList();
                 if (attachments.Count != 1)
                 {
                     baseObject.Success = false;
-                    obj.Add("errors", "Email should contain exactly one excel attachment.");
+                    obj.Add("errors", "Email should contain exactly one excel(.xlsx) attachment.");
                     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
                     baseObject.Data = obj;
                     return baseObject;
