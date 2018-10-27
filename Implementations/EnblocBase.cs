@@ -58,7 +58,7 @@ namespace Enbloc
                 if (!email.Attachments.Any())
                 {
                     baseObject.Success = false;
-                    obj.Add("errors", "No attachment(s) found.");
+                    obj.Add("errors" + Guid.NewGuid().ToString(), "No attachment(s) found.");
                     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
                     baseObject.Data = obj;
                     return baseObject;
@@ -68,7 +68,7 @@ namespace Enbloc
                 if (attachments.Count != 1)
                 {
                     baseObject.Success = false;
-                    obj.Add("errors", "Email should contain exactly one excel attachment.");
+                    obj.Add("errors" + Guid.NewGuid().ToString(), "Email should contain exactly one excel attachment.");
                     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredEmail;
                     baseObject.Data = obj;
                     return baseObject;
@@ -126,7 +126,7 @@ namespace Enbloc
             {
                 if (lstEnblocSnapshot.Count == 0)
                 {
-                    obj.Add("errors", "Excel Attachment does not contain any container data.");
+                    obj.Add("errors" + Guid.NewGuid().ToString(), "Excel Attachment does not contain any container data.");
                     baseObject.Success = false;
                     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
                     baseObject.Data = obj;
@@ -135,32 +135,31 @@ namespace Enbloc
 
                 if (lstEnblocSnapshot.Count > 1000)
                 {
-                    obj.Add("errors", "Maximum 1000 rows are allowed in the Excel Attachment.");
+                    obj.Add("errors" + Guid.NewGuid().ToString(), "Maximum 1000 rows are allowed in the Excel Attachment.");
                     baseObject.Success = false;
                     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
                     baseObject.Data = obj;
                     return baseObject;
                 }
 
-
-                // if vessel voyage no already exists and enbloc in progress then no processing 
-                if (IsEnblocExists(lstEnblocSnapshot))
+                //Add  other specific validations
+                var IsOtherValid = ValidateOtherData(email, lstEnblocSnapshot);
+                if (!IsOtherValid.Success)
                 {
-                    obj.Add("0", "Enbloc already exists in the system");
                     baseObject.Success = false;
                     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
-                    baseObject.Data = obj;
+                    baseObject.Data = IsOtherValid.Data;
                     return baseObject;
                 }
+
 
                 ValidationResult results = ValidateEnblocData(lstEnblocSnapshot);
                 if (!results.IsValid)
                 {
-                    int selectIndex = 0;
-                    results.Errors.Select(result => result.ErrorMessage + ", For value '" + result.AttemptedValue + "'").Distinct().ToList().ForEach(error =>
-                     {
-                         obj.Add(Convert.ToString(selectIndex++), error);
-                     });
+                    results.Errors.ToList().ForEach(result =>
+                    {
+                        obj.Add("errors" + Guid.NewGuid().ToString(), result.ErrorMessage + ", For value '" + result.AttemptedValue + "'");
+                    });
                     baseObject.Success = false;
                     baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
                     baseObject.Data = obj;
@@ -181,12 +180,13 @@ namespace Enbloc
 
         protected abstract void ProcessEnbloc<T>(FileInfo file, string programCode, int transactionId, IEnumerable<T> lstEnblocSnapshot);
 
-
         protected abstract BaseReturn<Dictionary<string, string>> SaveEnblocToDB<T>(Email email, IEnumerable<T> lstEnblocSnapshot);
 
         protected abstract ValidationResult ValidateEnblocData<T>(IEnumerable<T> lstEnblocSnapshot);
 
-        protected abstract bool IsEnblocExists<T>(IEnumerable<T> lstEnblocSnapshot);
+        // protected abstract bool IsEnblocExists<T>(IEnumerable<T> lstEnblocSnapshot);
+
+        protected abstract BaseReturn<Dictionary<string, string>> ValidateOtherData<T>(Email email, IEnumerable<T> lstEnblocSnapshot);
 
         protected static int GetColumnIndexByName(ExcelWorksheet ws, string columnName)
         {

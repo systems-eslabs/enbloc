@@ -15,7 +15,6 @@ namespace Enbloc.Entities
         public string AgentName { get; set; }
         public string DepotName { get; set; }
         public string ViaNo { get; set; }
-
         public string EnblocNumber { get; set; }
         public string PermissionDate { get; set; }
         public string Srl { get; set; }

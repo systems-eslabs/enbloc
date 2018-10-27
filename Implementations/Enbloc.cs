@@ -152,13 +152,13 @@ namespace Enbloc
                     template = "enbloc/Templates/ErrorOccured.html";
                     break;
                 case EnumTemplateCode.ErrorOccuredExcel:
-                    errors = "<li>" + baseObject.Data.Where(x => x.Key != "[{{transactionNo}}]").Select(x => x.Value).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
-                    baseObject.Data.Add("[{{errors1}}]", errors);
+                    errors = "<li>" + baseObject.Data.Where(x => x.Key.StartsWith("[{{errors")).Select(x => x.Value).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
+                    baseObject.Data.Add("[{{errors}}]", errors);
                     template = "enbloc/Templates/ErrorOccuredExcel.html";
                     break;
                 case EnumTemplateCode.ErrorOccuredEmail:
-                    errors = "<li>" + baseObject.Data.Where(x => x.Key != "[{{transactionNo}}]").Select(x => x.Value).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
-                    baseObject.Data.Add("[{{errors1}}]", errors);
+                    errors = "<li>" + baseObject.Data.Where(x => x.Key.StartsWith("[{{errors")).Select(x => x.Value).Distinct().Aggregate((y, z) => y + "</li><li>" + z) + "</li>";
+                    baseObject.Data.Add("[{{errors}}]", errors);
                     template = "enbloc/Templates/ErrorOccuredEmail.html";
                     break;
                 case EnumTemplateCode.EmailProcessed:
