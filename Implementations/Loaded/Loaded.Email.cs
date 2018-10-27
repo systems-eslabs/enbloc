@@ -106,6 +106,7 @@ namespace Enbloc
                     PermissionDate = enblocFromSnapshot.PermissionDate,
                     DepotName = enblocFromSnapshot.DepotName,
                     TransactionId = enblocFromSnapshot.TransactionId,
+                    Status = Status.PENDING,
                     CreatedBy = 0
                 };
                 //Save to DB
@@ -140,6 +141,7 @@ namespace Enbloc
                         Name = enblocContainer.Name,
                         ItemNo = enblocContainer.ItemNo,
                         DisposalMode = enblocContainer.DisposalMode,
+                        Status = Status.PENDING,
                         CreatedBy = 0
                     });
                 });
