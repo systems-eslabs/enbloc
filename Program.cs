@@ -9,7 +9,9 @@ using System.Text;
 using Enbloc.Entities;
 using FluentValidation.Results;
 using Enbloc.DbEntities;
-
+using Serilog;
+using Serilog.Sinks.GoogleCloudLogging;
+using Serilog.Exceptions;
 namespace Enbloc
 {
 
@@ -22,10 +24,18 @@ namespace Enbloc
         {
             try
             {
+
+                Log.Logger = new LoggerConfiguration()
+                .Enrich.WithExceptionDetails()
+                //.WriteTo.GoogleCloudLogging(new GoogleCloudLoggingSinkOptions("vijay-angular"))
+                .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+
                 //Only If Local Env
                 var gcpCredentaialPath = "./config/client_secret.json";
                 System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", gcpCredentaialPath);
-
+                Log.Information("Application Start");
                 new Enbloc().processUnreadEmails();
 
             }
