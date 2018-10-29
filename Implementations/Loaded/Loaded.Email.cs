@@ -162,17 +162,37 @@ namespace Enbloc
         }
 
 
-        protected override bool IsEnblocExists<T>(IEnumerable<T> lstEnblocSnapshot)
-        {
-            var enblocData = ((List<LoadedEnblocSnapshot>) lstEnblocSnapshot).First();
-            return new EmpezarRepository<LoadedEnbloc>().IsExists(x => x.EnblocNumber == enblocData.EnblocNumber && x.Status != Status.COMPLETED);
-        }
+        // protected override bool IsEnblocExists<T>(IEnumerable<T> lstEnblocSnapshot)
+        // {
+        //     var enblocData = ((List<LoadedEnblocSnapshot>) lstEnblocSnapshot).First();
+        //     return new EmpezarRepository<LoadedEnbloc>().IsExists(x => x.EnblocNumber == enblocData.EnblocNumber && x.Status != Status.COMPLETED);
+        // }
 
         protected override ValidationResult ValidateEnblocData<T>(IEnumerable<T> lstEnblocSnapshot)
         {
             LoadedEnblocValidatorCollectionValidator validator = new LoadedEnblocValidatorCollectionValidator();
             ValidationResult results = validator.Validate((List<LoadedEnblocSnapshot>)lstEnblocSnapshot);
             return results;
+        }
+
+        protected override BaseReturn<Dictionary<string, string>> ValidateOtherData<T>(Email email, IEnumerable<T> lstEnblocSnapshot)
+        {
+            BaseReturn<Dictionary<string, string>> baseObject = new BaseReturn<Dictionary<string, string>>();
+            Dictionary<string, string> obj = new Dictionary<string, string>();
+            obj.Add("transactionNo", Convert.ToString(email.TransactionId));
+
+            var lstenbloc = ((List<LoadedEnblocSnapshot>)lstEnblocSnapshot);
+            var IsEnblocExists = new EmpezarRepository<EmptyEnbloc>().IsExists(x => x.EnblocNumber == lstenbloc.First().EnblocNumber && x.Status != Status.COMPLETED);
+            if (!IsEnblocExists)
+            {
+                obj.Add("errors" + Guid.NewGuid().ToString(), "Enbloc already exists in the system");
+                baseObject.Success = false;
+                baseObject.Code = (int)EnumTemplateCode.ErrorOccuredExcel;
+                baseObject.Data = obj;
+                return baseObject;
+            }
+            baseObject.Success = true;
+            return baseObject;
         }
 
 
