@@ -15,6 +15,8 @@ namespace Enbloc.DbEntities
         public string DepotName { get; set; }
         public string TransactionId { get; set; }
         public string Status { get; set; }
+        public DateTime? CompletedDate { get; set; }
+        public DateTime? StartDate { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? ModifiedBy { get; set; }

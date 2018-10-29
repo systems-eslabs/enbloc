@@ -8,6 +8,10 @@ namespace Enbloc.DbEntities
         public long Id { get; set; }
         public string TransactionId { get; set; }
         public string Status { get; set; }
+        public DateTime? ApprovedDate { get; set; }
+        public DateTime? HoldDate { get; set; }
+        public DateTime? GateOutDate { get; set; }
+        public DateTime? GateInDate { get; set; }
         public string Vessel { get; set; }
         public string Voyage { get; set; }
         public string EnblocNumber { get; set; }

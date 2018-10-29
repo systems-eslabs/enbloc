@@ -54,6 +54,10 @@ password=vijay@123;database=empezar");
                     .HasColumnName("id")
                     .HasColumnType("bigint(20)");
 
+                entity.Property(e => e.CompletedDate)
+                    .HasColumnName("completed_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
                     .HasColumnType("int(11)");
@@ -75,6 +79,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.ModifiedDate)
                     .HasColumnName("modified_date")
                     .HasColumnType("timestamp");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -121,6 +129,10 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp")
                     .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
 
+                entity.Property(e => e.CompletedDate)
+                    .HasColumnName("completed_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
                     .HasColumnType("int(11)");
@@ -141,6 +153,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.ModifiedDate)
                     .HasColumnName("modified_date")
                     .HasColumnType("timestamp");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -178,6 +194,10 @@ password=vijay@123;database=empezar");
                     .HasColumnName("id")
                     .HasColumnType("bigint(20)");
 
+                entity.Property(e => e.ApprovedDate)
+                    .HasColumnName("approved_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.ContainerNo)
                     .IsRequired()
                     .HasColumnName("container_no")
@@ -205,6 +225,18 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("enbloc_number")
                     .HasColumnType("varchar(250)");
+
+                entity.Property(e => e.GateInDate)
+                    .HasColumnName("gate_in_date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.GateOutDate)
+                    .HasColumnName("gate_out_date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.HoldDate)
+                    .HasColumnName("hold_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.IsoCode)
                     .HasColumnName("iso_code")
@@ -255,6 +287,10 @@ password=vijay@123;database=empezar");
                     .HasColumnName("id")
                     .HasColumnType("bigint(20)");
 
+                entity.Property(e => e.ApprovedDate)
+                    .HasColumnName("approved_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.ContainerNo)
                     .IsRequired()
                     .HasColumnName("container_no")
@@ -282,6 +318,14 @@ password=vijay@123;database=empezar");
                     .HasColumnName("enbloc_number")
                     .HasColumnType("varchar(250)");
 
+                entity.Property(e => e.GateInDate)
+                    .HasColumnName("gate_in_date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.GateOutDate)
+                    .HasColumnName("gate_out_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
                     .HasColumnType("int(11)");
@@ -291,6 +335,10 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp")
                     .HasDefaultValueSql("'CURRENT_TIMESTAMP'")
                     .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.HoldDate)
+                    .HasColumnName("hold_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.IsoCode)
                     .HasColumnName("iso_code")
@@ -341,6 +389,10 @@ password=vijay@123;database=empezar");
                     .HasColumnName("id")
                     .HasColumnType("bigint(20)");
 
+                entity.Property(e => e.ApprovedDate)
+                    .HasColumnName("approved_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.ArchivedBy)
                     .HasColumnName("archived_by")
                     .HasColumnType("int(11)");
@@ -378,6 +430,14 @@ password=vijay@123;database=empezar");
                     .HasColumnName("enbloc_number")
                     .HasColumnType("varchar(250)");
 
+                entity.Property(e => e.GateInDate)
+                    .HasColumnName("gate_in_date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.GateOutDate)
+                    .HasColumnName("gate_out_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
                     .HasColumnType("int(11)");
@@ -385,6 +445,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.HistoryDate)
                     .HasColumnName("history_date")
                     .HasColumnType("timestamp");
+
+                entity.Property(e => e.HoldDate)
+                    .HasColumnName("hold_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.IsoCode)
                     .HasColumnName("iso_code")
@@ -435,6 +499,10 @@ password=vijay@123;database=empezar");
                     .HasColumnName("id")
                     .HasColumnType("bigint(20)");
 
+                entity.Property(e => e.CompletedDate)
+                    .HasColumnName("completed_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
                     .HasColumnType("int(11)");
@@ -465,6 +533,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.ModifiedDate)
                     .HasColumnName("modified_date")
                     .HasColumnType("timestamp");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -512,6 +584,10 @@ password=vijay@123;database=empezar");
                     .HasDefaultValueSql("'CURRENT_TIMESTAMP'")
                     .ValueGeneratedOnAddOrUpdate();
 
+                entity.Property(e => e.CompletedDate)
+                    .HasColumnName("completed_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
                     .HasColumnType("int(11)");
@@ -540,6 +616,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.ModifiedDate)
                     .HasColumnName("modified_date")
                     .HasColumnType("timestamp");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -581,6 +661,10 @@ password=vijay@123;database=empezar");
                     .HasColumnName("agent_name")
                     .HasColumnType("varchar(300)");
 
+                entity.Property(e => e.CompletedDate)
+                    .HasColumnName("completed_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
                     .HasColumnType("int(11)");
@@ -610,6 +694,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.PermissionDate)
                     .HasColumnName("permission_date")
                     .HasColumnType("varchar(50)");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -660,6 +748,10 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp")
                     .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
 
+                entity.Property(e => e.CompletedDate)
+                    .HasColumnName("completed_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
                     .HasColumnType("int(11)");
@@ -688,6 +780,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.PermissionDate)
                     .HasColumnName("permission_date")
                     .HasColumnType("varchar(50)");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -723,6 +819,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.ApprovedDate)
+                    .HasColumnName("approved_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.BlNumber)
                     .HasColumnName("bl_number")
@@ -771,6 +871,18 @@ password=vijay@123;database=empezar");
                     .IsRequired()
                     .HasColumnName("enbloc_number")
                     .HasColumnType("varchar(250)");
+
+                entity.Property(e => e.GateInDate)
+                    .HasColumnName("gate_in_date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.GateOutDate)
+                    .HasColumnName("gate_out_date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.HoldDate)
+                    .HasColumnName("hold_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ImdgClass)
                     .HasColumnName("imdg_class")
@@ -856,6 +968,10 @@ password=vijay@123;database=empezar");
                     .HasColumnName("id")
                     .HasColumnType("bigint(20)");
 
+                entity.Property(e => e.ApprovedDate)
+                    .HasColumnName("approved_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.BlNumber)
                     .HasColumnName("bl_number")
                     .HasColumnType("varchar(500)");
@@ -908,6 +1024,14 @@ password=vijay@123;database=empezar");
                     .HasColumnName("enbloc_number")
                     .HasColumnType("varchar(250)");
 
+                entity.Property(e => e.GateInDate)
+                    .HasColumnName("gate_in_date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.GateOutDate)
+                    .HasColumnName("gate_out_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
                     .HasColumnType("int(11)");
@@ -917,6 +1041,10 @@ password=vijay@123;database=empezar");
                     .HasColumnType("timestamp")
                     .HasDefaultValueSql("'CURRENT_TIMESTAMP'")
                     .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.HoldDate)
+                    .HasColumnName("hold_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ImdgClass)
                     .HasColumnName("imdg_class")
@@ -1001,6 +1129,10 @@ password=vijay@123;database=empezar");
                     .HasColumnName("id")
                     .HasColumnType("bigint(20)");
 
+                entity.Property(e => e.ApprovedDate)
+                    .HasColumnName("approved_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.ArchivedBy)
                     .HasColumnName("archived_by")
                     .HasColumnType("int(11)");
@@ -1063,6 +1195,14 @@ password=vijay@123;database=empezar");
                     .HasColumnName("enbloc_number")
                     .HasColumnType("varchar(250)");
 
+                entity.Property(e => e.GateInDate)
+                    .HasColumnName("gate_in_date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.GateOutDate)
+                    .HasColumnName("gate_out_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.HistoryBy)
                     .HasColumnName("history_by")
                     .HasColumnType("int(11)");
@@ -1070,6 +1210,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.HistoryDate)
                     .HasColumnName("history_date")
                     .HasColumnType("timestamp");
+
+                entity.Property(e => e.HoldDate)
+                    .HasColumnName("hold_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ImdgClass)
                     .HasColumnName("imdg_class")
@@ -1158,6 +1302,10 @@ password=vijay@123;database=empezar");
                     .HasColumnName("agent_name")
                     .HasColumnType("varchar(200)");
 
+                entity.Property(e => e.CompletedDate)
+                    .HasColumnName("completed_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
                     .HasColumnType("int(11)");
@@ -1192,6 +1340,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.ModifiedDate)
                     .HasColumnName("modified_date")
                     .HasColumnType("timestamp");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -1242,6 +1394,10 @@ password=vijay@123;database=empezar");
                     .HasDefaultValueSql("'CURRENT_TIMESTAMP'")
                     .ValueGeneratedOnAddOrUpdate();
 
+                entity.Property(e => e.CompletedDate)
+                    .HasColumnName("completed_date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
                     .HasColumnType("int(11)");
@@ -1274,6 +1430,10 @@ password=vijay@123;database=empezar");
                 entity.Property(e => e.ModifiedDate)
                     .HasColumnName("modified_date")
                     .HasColumnType("timestamp");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("start_date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
